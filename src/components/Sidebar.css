@@ -1,0 +1,92 @@
+/* Sidebar: desktop */
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  background: #111827;
+  color: #f3f4f6;
+  padding: 2rem 1.25rem;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 1.125rem;
+  margin-bottom: 1.25rem;
+}
+
+.sidebar nav {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.sidebar .nav-item {
+  color: #e5e7eb;
+  padding: 0.35rem 0.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.sidebar .nav-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Mobile: turn sidebar into a sticky top bar with horizontal scroll */
+@media (max-width: 768px) {
+  .sidebar {
+    height: auto;
+    position: sticky; /* visible while scrolling content */
+    top: 0;
+    z-index: 40;
+    padding: 0.6rem; /* compact padding on phones */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    background: #111827; /* ensure solid bg when sticky */
+  }
+
+  .sidebar nav {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto; /* enable horizontal scroll */
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch; /* smooth iOS momentum */
+    scrollbar-width: thin; /* Firefox thin scrollbar */
+    scroll-snap-type: x proximity; /* gentle snapping */
+    padding-bottom: 0.25rem;
+
+    /* Edge fade to indicate overflow content */
+    mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      black 16px,
+      black calc(100% - 16px),
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      black 16px,
+      black calc(100% - 16px),
+      transparent 100%
+    );
+  }
+
+  .sidebar .nav-item {
+    flex: 0 0 auto; /* keep items on one row */
+    white-space: nowrap; /* single-line labels */
+    font-size: 0.95rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 8px;
+    scroll-snap-align: start; /* snap each item at start edge */
+  }
+
+  /* Optional: nicer thin scrollbar styling (WebKit) */
+  .sidebar nav::-webkit-scrollbar {
+    height: 6px;
+  }
+  .sidebar nav::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .sidebar nav::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
+  }
+}

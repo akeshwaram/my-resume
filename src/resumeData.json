@@ -1,0 +1,171 @@
+{
+  "about": {
+    "name": "Ashwin Keshwaram",
+    "location": "Hyderabad, India",
+    "content": "Proven Software Engineer with 15+ years of hands-on experience in the US tech industry. Experienced Sitecore (a popular .NET-based CMS) and .NET Developer with 10 years of expertise in developing and implementing Sitecore based solutions and over 15 years in .NET applications. Full-stack versatility with an expertise in backend development (Sitecore, Node.js, .NET, .NET Core, SQL Server) and a solid foundation in frontend technologies (React, JavaScript). Skilled in collaborating with product owners, leadership, and business stakeholders, while mentoring and supporting both in-house and client team developers to enhance their skills."
+  },
+  "experience": {
+    "list": [
+      {
+        "role": "Senior Software Engineer",
+        "company": "Fincentric (prev. part of S&P Global)",
+        "period": "Sep 2020 – Dec 2024",
+        "location": "Denver, CO, USA",
+        "highlights": [
+          "Led development for a website with 27 regions, 31 languages, and over $2 trillion in assets under management for a global investment management firm client of S&P Global by utilizing Sitecore 9.3, C#, .NET Framework, SQL Server, JavaScript, HTML, and CSS daily",
+          "Created a dashboard to monitor client’s fund data utilizing C#, .NET Core, and .NET Core MVC logic",
+          "Implemented custom pipelines to meet unique needs of the project, accommodate custom business logic, and create experiences tailored to different user roles",
+          "Developed and maintained PowerShell scripts to automate and streamline Sitecore tasks across multiple language versions, enabling reuse across teams",
+          "Created and adjusted SQL Server stored procedures for handling complex data processing tasks",
+          "Improved Sitecore practices and mentor other developers on the team on best practices",
+          "Led performance improvements by refining caching strategies, optimizing sublayouts/renderings, configuring Solr search indexes, and minimizing redundant SQL stored procedure calls, achieving a 30% increase in response times for high-demand pages",
+          "Utilized Grafana and Kibana for real-time monitoring and to identify performance bottlenecks",
+          "Developed a public-facing web application for a high-profile fintech client of S&P Global, using React for the frontend, supported by a Node API and SQL Server for the backend",
+          "Utilized JUnit for unit testing in Node.js and React applications to ensure 95%+ coverage for each individual feature",
+          "Served as the primary point of contact for all Sitecore and .NET related inquiries and issues within the team",
+          "Utilized Nomad and Docker to containerize applications",
+          "Implemented and maintained Jenkins pipelines for automated build, testing, and deployment, integrating SonarQube for continuous code quality analysis, improving code reliability",
+          "Conducted thorough code reviews for pull requests, ensuring adherence to coding standards and best practices"
+        ]
+      },
+      {
+        "role": "Web Engineer II",
+        "company": "Arrow Electronics",
+        "period": "Apr 2020 – Sep 2020",
+        "location": "Denver, CO, USA",
+        "highlights": [
+          "Wrote code that adheres to Sitecore JSS/Headless architecture using the .NET Framework, C#, Angular, and Typescript for arrow.com",
+          "Supported and improved arrow.com including building new Sitecore components to ease the creation of new high traffic and high revenue pages by content editors and marketers"
+        ]
+      },
+      {
+        "role": "Software Engineer",
+        "company": "Vertic (now part of Globant)",
+        "period": "Mar 2018 – Mar 2020",
+        "location": "New York, NY, USA",
+        "highlights": [
+          "Built and maintained websites for multiples high-profiles clients of Vertic. Created over 100 different web components using Sitecore, C#, .NET MVC, .NET WebForms, and Web API",
+          "Managed and optimized the content authoring process within Sitecore Experience Editor for a large number of components",
+          "Worked collaboratively with other developers, participate in peer code reviews, and followed best practices and design patterns",
+          "Supported cloud-based deployment and management of Sitecore/.NET application environments in Azure"
+        ]
+      },
+      {
+        "role": ".NET Developer",
+        "company": "Velir",
+        "period": "Nov 2014 – Jan 2018",
+        "location": "Somerville, MA, USA & Raleigh, NC, USA",
+        "highlights": [
+          "Built Sitecore applications from scratch using .NET MVC, .NET WebForms, Angular, and Backbone",
+          "Upgraded applications to latest versions of Sitecore using express migration tool",
+          "Implemented custom workflows for content authors to ensure smooth transition between drafting, review, and publishing",
+          "Implemented unit tests using NUnit to ensure code quality and functionality, leading to improved test coverage and reduced bug rates in production"
+        ]
+      },
+      {
+        "role": "Software Engineer",
+        "company": "eMetric LLC",
+        "period": "Sep 2008 – Nov 2014",
+        "location": "San Antonio, TX, USA",
+        "highlights": [
+          "Participated in all phases of the software development of Data Interaction, an online platform for reporting student assessment and performance results at the State, District and School Levels",
+          "Designed, implemented, and tested the Analyze module for the application, enabling users to generate customized reports using district/state assessment data, and developed the back end for multiple reports in C# with .NET Web Forms, .NET MVC, and jQuery to allow users to tailor the data displayed"
+        ]
+      }
+    ]
+  },
+  "projects": {
+    "list": [
+      {
+        "title": "Cloud Cost Optimizer",
+        "description": "Analyzer for idle resources and rightsizing suggestions.",
+        "stack": ["React", "Node.js", "AWS Lambda", "Athena"],
+        "url": "https://example.com/cost-optimizer"
+      },
+      "Serverless Image Pipeline"
+    ]
+  },
+  "skills": {
+    "list": [
+      "Cloud: AWS (EC2, S3, RDS, Lambda, API Gateway, CloudFront, Route 53, IAM, CloudFormation)",
+      "Serverless Architecture, CI/CD (CodePipeline, Jenkins)",
+      "AWS: Monitoring & Security (CloudWatch, CloudTrail, IAM)",
+      "C#",
+      ".NET Core",
+      ".NET MVC",
+      "ASP.NET Web API",
+      "ASP.NET Web Forms",
+      "Node.js",
+      "Web Services (REST and SOAP)",
+      "React",
+      "HTML5",
+      "CSS3",
+      "Angular",
+      "JavaScript",
+      "Bootstrap",
+      "Tailwind",
+      "Visual Studio",
+      "Git",
+      "Swagger",
+      "Consul",
+      "Apigee",
+      "Kibana",
+      "Grafana",
+      "Jenkins",
+      "TFS",
+      "SVN",
+      "Docker",
+      "Nomad",
+      "SQL Server",
+      "Solr/Lucene",
+      "Entity Framework",
+      "LINQ",
+      "Agile (Scrum)",
+      "jest-junit",
+      "Autofac",
+      "NSubstitute",
+      "NUnit",
+      "NCrunch"
+    ]
+  },
+  "education": {
+    "list": [
+      {
+        "degree": "Master of Computer Science",
+        "college": "Texas A&M University",
+        "location": "College Station, TX, USA"
+      },
+      {
+        "degree": "B.Tech, Computer Science and Engineering",
+        "college": "Jawaharlal Nehru Technological University",
+        "location": "Hyderabad, India"
+      }
+    ]
+  },
+  "certifications": {
+    "list": [
+      {
+        "name": "AWS Certified Solutions Architect – Associate",
+        "date": "October 2025",
+        "url": "https://www.credly.com/badges/d03667a4-ca36-4a38-90d7-a677f871c675/public_url"
+      },
+      {
+        "name": "Sitecore® 9.0 Certified Platform Associate Developer (September 2018)"
+      }
+    ]
+  },
+  "contact": {
+    "items": [
+      {
+        "label": "",
+        "value": "Email Me",
+        "href": "mailto:ashwin.2610@gmail.com"
+      },
+      {
+        "label": "LinkedIn",
+        "value": "https://www.linkedin.com/in/ashwinkeshwaram/",
+        "href": "https://www.linkedin.com/in/ashwinkeshwaram/"
+      }
+    ]
+  }
+}
