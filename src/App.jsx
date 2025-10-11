@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Sidebar from "./components/Sidebar.jsx";
 import Section from "./components/Section.jsx";
-import ExperienceSection from "./components/ExperienceSection.jsx";
 import "./App.css";
 
 export default function App({ resumeData }) {
@@ -63,7 +62,7 @@ export default function App({ resumeData }) {
         <Section
           id="certs"
           title="Certifications"
-          variant="cards"
+          variant="simple"
           list={(resumeData?.certifications?.list || []).map((c) => ({
             title: c.name,
             sub: c.issuer,
@@ -71,10 +70,17 @@ export default function App({ resumeData }) {
             link: c.url,
           }))}
         />
-        <ExperienceSection
+        <Section
           id="experience"
           title="Experience"
-          items={resumeData?.experience?.list || []}
+          variant="experience"
+          list={(resumeData?.experience?.list || []).map((exp) => ({
+            title: exp.role,
+            sub: exp.company,
+            meta: `${exp.period}${exp.location ? ' • ' + exp.location : ''}`,
+            description: exp.summary,
+            highlights: exp.highlights || []
+          }))}
         />
 
         {/* <Section
@@ -95,7 +101,7 @@ export default function App({ resumeData }) {
         <Section
           id="education"
           title="Education"
-          variant="cards"
+          variant="simple"
           list={(resumeData?.education?.list || []).map((e) => ({
             title: e.degree,
             sub: [e.college, e.location].filter(Boolean).join(", "),
@@ -106,7 +112,7 @@ export default function App({ resumeData }) {
         <Section
           id="contact"
           title="Contact"
-          variant="cards"
+          variant="simple"
           list={(resumeData?.contact?.items || []).map((c) => ({
             title: c.label,
             linkText: c.value,

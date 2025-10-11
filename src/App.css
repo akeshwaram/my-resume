@@ -126,30 +126,7 @@ section h2 {
   border-color: var(--color-accent);
 }
 
-.card-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
 
-.card + .card {
-  margin-top: var(--space-2);
-}
-
-.card {
-  background: var(--color-bg-primary);
-  border: 1px solid var(--color-border-light);
-  border-radius: var(--radius-lg);
-  padding: var(--space-4);
-  min-width: 0;
-  box-shadow: var(--shadow-sm);
-  transition: all var(--transition-normal);
-}
-
-.card:hover {
-  box-shadow: var(--shadow-md);
-  border-color: var(--color-border-medium);
-}
 
 /* Two-column utility that collapses on small screens */
 .grid-2 {
@@ -230,14 +207,7 @@ section {
     font-size: var(--text-2xl);
   }
   
-  /* Optimized card layout for tablet */
-  .card-list {
-    gap: var(--space-2);
-  }
-  
-  .card {
-    padding: var(--space-6);
-  }
+
 }
 
 /* Desktop and up - Enhanced for large screens */
@@ -294,10 +264,7 @@ section {
     font-size: var(--text-3xl);
   }
   
-  /* Better card layout on large screens */
-  .card-list {
-    gap: var(--space-2);
-  }
+
 }
 
 /* Ultra-wide desktop optimizations */
@@ -564,11 +531,7 @@ a:hover {
     transition: all var(--transition-fast);
   }
   
-  /* Better visual feedback for interactive elements */
-  .card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-xl);
-  }
+
   
   .tag:hover {
     transform: translateY(-2px);

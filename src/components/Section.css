@@ -42,126 +42,7 @@ section > *:last-child {
 section > * + * {
   margin-top: var(--space-4);
 }
-/* C
-ard System Design */
 
-/* Card list container */
-.card-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: var(--space-2);
-}
-
-/* Individual card styling with modern design */
-.card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: var(--card-radius);
-  padding: var(--space-4);
-  box-shadow: var(--card-shadow);
-  transition: all var(--transition-smooth);
-  position: relative;
-  cursor: pointer;
-  overflow: hidden;
-}
-
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.05), transparent);
-  transition: left var(--transition-normal);
-}
-
-/* Card hover effects with elevation changes */
-.card:hover {
-  box-shadow: var(--card-shadow-hover);
-  transform: translateY(-2px) scale(1.01);
-  border-color: var(--color-border-medium);
-}
-
-.card:hover::before {
-  left: 100%;
-}
-
-.card:active {
-  transform: translateY(-1px) scale(0.99);
-}
-
-/* Card title styling */
-.card > div:first-child {
-  font-weight: var(--font-semibold) !important;
-  font-size: var(--text-lg);
-  color: var(--color-text-primary);
-  margin-bottom: var(--space-2);
-  line-height: var(--leading-snug);
-}
-
-/* Card meta information */
-.card .meta {
-  font-size: var(--text-sm);
-  color: var(--color-text-secondary);
-  line-height: var(--leading-normal);
-  margin-bottom: var(--space-1);
-}
-
-.card .meta:last-of-type {
-  margin-bottom: var(--space-2);
-}
-
-/* Card links with improved visual feedback */
-.card a {
-  display: inline-flex;
-  align-items: center;
-  font-size: var(--text-sm);
-  font-weight: var(--font-medium);
-  color: var(--color-accent);
-  text-decoration: none;
-  padding: var(--space-2) var(--space-4);
-  border: 1px solid var(--color-accent);
-  border-radius: var(--radius-md);
-  transition: all var(--transition-smooth);
-  background: transparent;
-  position: relative;
-  overflow: hidden;
-}
-
-.card a::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: var(--color-accent);
-  transition: left var(--transition-bounce);
-  z-index: -1;
-}
-
-.card a:hover {
-  color: var(--color-text-inverse);
-  text-decoration: none;
-  transform: translateY(-1px) scale(1.05);
-  box-shadow: var(--shadow-sm);
-}
-
-.card a:hover::before {
-  left: 0;
-}
-
-.card a:active {
-  transform: translateY(0) scale(0.95);
-}
-
-.card a:focus {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
 
 /* Tag System - Modern pill design */
 .tag-list {
@@ -222,21 +103,237 @@ ard System Design */
   outline-offset: 2px;
 }
 
-/* Visual separation between content types */
-.card + .card {
-  margin-top: var(--space-2);
-}
 
-/* Tag list spacing when used in cards */
-.card .tag-list {
-  margin-top: var(--space-2);
-  padding-top: var(--space-2);
-  border-top: 1px solid var(--color-border-light);
-}
 
 /* Standalone tag list (not in cards) */
 section > .tag-list {
   margin-top: var(--space-6);
+}
+
+/* Simple List Design - Ultra-minimal layout */
+.simple-list {
+  margin: 0;
+  padding: 0;
+}
+
+.simple-item {
+  margin-bottom: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.simple-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.simple-content {
+  line-height: 1.5;
+  font-size: 16px;
+}
+
+.simple-content strong {
+  color: #111827;
+  font-weight: 600;
+}
+
+.simple-content span {
+  color: #374151;
+}
+
+.simple-content a {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.simple-content a:hover {
+  text-decoration: underline;
+}
+
+/* Experience Simple Layout */
+.experience-simple-list {
+  margin: 0;
+  padding: 0;
+}
+
+.experience-simple-item {
+  margin-bottom: 20px;
+  padding: 12px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.experience-simple-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.experience-simple-header {
+  line-height: 1.4;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.experience-simple-header strong {
+  color: #111827;
+  font-weight: 600;
+}
+
+.experience-simple-header span {
+  color: #374151;
+}
+
+/* Compact List Design - Space-efficient alternative to cards */
+.compact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.compact-item {
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border-light);
+  transition: all var(--transition-fast);
+  overflow: visible;
+}
+
+.compact-item:last-child {
+  border-bottom: none;
+  padding-bottom: var(--space-3);
+}
+
+.compact-item:hover {
+  background: var(--color-bg-tertiary);
+  margin: 0 calc(-1 * var(--space-2));
+  padding: var(--space-3) var(--space-2);
+  border-radius: var(--radius-sm);
+  border-bottom: 1px solid transparent;
+  overflow: visible;
+}
+
+.compact-item:hover:last-child {
+  border-bottom: none;
+}
+
+.compact-content {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  line-height: var(--leading-normal);
+  min-height: 36px;
+  padding: var(--space-1) 0;
+}
+
+.compact-title {
+  font-weight: var(--font-semibold);
+  color: var(--color-text-primary);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+}
+
+.compact-sub {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-normal);
+  line-height: var(--leading-normal);
+}
+
+.compact-meta {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--font-normal);
+  line-height: var(--leading-normal);
+}
+
+.compact-link {
+  color: var(--color-accent);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  text-decoration: none;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  margin-left: auto;
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.compact-link:hover {
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
+  transform: none;
+  text-decoration: none;
+}
+
+/* Special case: when there's only a link and no other text */
+.compact-content-link-only {
+  justify-content: flex-start;
+}
+
+.compact-content-link-only .compact-link {
+  margin-left: 0;
+}
+
+.compact-description {
+  margin-top: var(--space-1);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+.compact-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-top: var(--space-1);
+}
+
+.compact-tag {
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-light);
+}
+
+/* Responsive adjustments for compact layout */
+@media (max-width: 768px) {
+  .compact-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-1);
+    min-height: 36px; /* Slightly more height on mobile for touch targets */
+  }
+  
+  .compact-link {
+    margin-left: 0;
+    align-self: flex-start;
+    min-height: 36px; /* Better touch target on mobile */
+    padding: var(--space-2) var(--space-3);
+  }
+  
+  .compact-content-link-only .compact-link {
+    margin-left: 0;
+  }
+  
+  .compact-title {
+    font-size: var(--text-sm);
+  }
+  
+  .compact-sub,
+  .compact-meta {
+    font-size: var(--text-xs);
+  }
 }/* Co
 ntent Layout and Spacing Improvements */
 
@@ -318,11 +415,7 @@ section .meta + .meta {
     line-height: var(--leading-tight);
   }
   
-  .card {
-    padding: var(--space-5);
-    /* Better mobile card spacing */
-    margin-bottom: var(--space-4);
-  }
+
   
   /* Enhanced touch targets for tags */
   .tag-list {
@@ -339,15 +432,7 @@ section .meta + .meta {
     align-items: center;
   }
   
-  /* Improved card link touch targets */
-  .card a {
-    padding: var(--space-3) var(--space-4);
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: var(--text-sm);
-  }
+
 }
 
 @media (max-width: 480px) {
@@ -357,26 +442,9 @@ section .meta + .meta {
     /* Tighter spacing for very small screens */
   }
   
-  .card {
-    padding: var(--space-4);
-  }
+
   
-  .card > div:first-child {
-    font-size: var(--text-base);
-    line-height: var(--leading-snug);
-  }
-  
-  /* Ensure readable text on very small screens */
-  .card .meta {
-    font-size: var(--text-sm);
-    line-height: var(--leading-normal);
-  }
-  
-  /* Stack card links vertically on very small screens */
-  .card a {
-    width: 100%;
-    margin-top: var(--space-2);
-  }
+
 }/* Tabl
 et-specific section optimizations */
 @media (min-width: 768px) and (max-width: 1023px) {
@@ -390,18 +458,7 @@ et-specific section optimizations */
     margin-bottom: var(--space-6);
   }
   
-  /* Optimized card layout for tablet */
-  .card-list {
-    gap: var(--space-2);
-  }
-  
-  .card {
-    padding: var(--space-6);
-  }
-  
-  .card > div:first-child {
-    font-size: var(--text-lg);
-  }
+
   
   /* Tag layout optimization for tablet */
   .tag-list {
@@ -421,9 +478,7 @@ et-specific section optimizations */
     gap: var(--space-4);
   }
   
-  .card {
-    padding: var(--space-7);
-  }
+
 }
 
 /* Tablet landscape specific adjustments */
@@ -437,9 +492,7 @@ et-specific section optimizations */
     padding: var(--space-6);
   }
   
-  .card {
-    padding: var(--space-5);
-  }
+
 }/*
  Desktop-specific section enhancements */
 @media (min-width: 1024px) {
@@ -478,25 +531,7 @@ et-specific section optimizations */
     margin-bottom: var(--space-8);
   }
   
-  /* Enhanced card system for desktop */
-  .card-list {
-    gap: var(--space-2);
-  }
-  
-  .card {
-    padding: var(--space-8);
-    transition: all var(--transition-smooth);
-  }
-  
-  .card:hover {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: var(--shadow-xl);
-    border-color: var(--color-accent);
-  }
-  
-  .card > div:first-child {
-    font-size: var(--text-xl);
-  }
+
   
   /* Enhanced tag system for desktop */
   .tag-list {
@@ -514,17 +549,7 @@ et-specific section optimizations */
     box-shadow: var(--shadow-md);
   }
   
-  /* Better link styling for desktop */
-  .card a {
-    padding: var(--space-3) var(--space-5);
-    font-size: var(--text-base);
-    transition: all var(--transition-smooth);
-  }
-  
-  .card a:hover {
-    transform: translateY(-2px) scale(1.05);
-    box-shadow: var(--shadow-lg);
-  }
+
 }
 
 /* Large desktop section optimizations */
@@ -539,17 +564,7 @@ et-specific section optimizations */
     margin-bottom: var(--space-10);
   }
   
-  .card-list {
-    gap: var(--space-2);
-  }
-  
-  .card {
-    padding: var(--space-10);
-  }
-  
-  .card > div:first-child {
-    font-size: var(--text-2xl);
-  }
+
 }
 
 /* Ultra-wide desktop section optimizations */
@@ -559,11 +574,5 @@ et-specific section optimizations */
     margin-bottom: var(--space-20);
   }
   
-  .card-list {
-    gap: var(--space-2);
-  }
-  
-  .card {
-    padding: var(--space-12);
-  }
+
 }
