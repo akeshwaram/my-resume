@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Sidebar from "./components/Sidebar.jsx";
 import Section from "./components/Section.jsx";
 import ExperienceSection from "./components/ExperienceSection.jsx";
-import "./app.css";
+import "./App.css";
 
 export default function App({ resumeData }) {
   const about = resumeData?.about || {};
@@ -33,6 +33,7 @@ export default function App({ resumeData }) {
 
   return (
     <div className="app-shell">
+      <a href="#main-content" className="skip-link">Skip to main content</a>
       <Sidebar
         name={about?.name}
         links={[
@@ -46,7 +47,7 @@ export default function App({ resumeData }) {
         ]}
       />
 
-      <main className="app-content" role="main">
+      <main id="main-content" className="app-content" role="main">
         <Section id="about" title="About">
           {about?.content && <p>{about.content}</p>}
           {about?.location && (

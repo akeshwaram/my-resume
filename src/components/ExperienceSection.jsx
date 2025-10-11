@@ -3,19 +3,25 @@ import "./ExperienceSection.css";
 
 export default function ExperienceSection({ id, title, items = [] }) {
   return (
-    <section id={id}>
+    <section id={id} className="experience-section">
       <h2>{title}</h2>
-      <ul className="card-list">
+      <ul className="experience-list">
         {items.map((x, i) => (
-          <li key={i} className="card">
-            <div style={{ fontWeight: 600 }}>
-              {x.role} {x.company ? `· ${x.company}` : ""}
+          <li key={i} className="experience-card">
+            <div className="experience-header">
+              <div className="experience-title">{x.role}</div>
+              {x.company && <div className="experience-company">{x.company}</div>}
             </div>
-            {x.period && <div className="meta">{x.period}</div>}
-            {x.location && <div className="meta">{x.location}</div>}
-            {x.summary && <p style={{ marginTop: ".5rem" }}>{x.summary}</p>}
+            
+            <div className="experience-meta">
+              {x.period && <div className="experience-period">{x.period}</div>}
+              {x.location && <div className="experience-location">{x.location}</div>}
+            </div>
+            
+            {x.summary && <p className="experience-summary">{x.summary}</p>}
+            
             {!!(x.highlights || []).length && (
-              <ul style={{ marginTop: ".5rem" }}>
+              <ul className="experience-highlights">
                 {x.highlights.map((h, j) => (
                   <li key={j}>{h}</li>
                 ))}

@@ -3,31 +3,99 @@
   position: sticky;
   top: 0;
   height: 100vh;
-  background: #111827;
-  color: #f3f4f6;
-  padding: 2rem 1.25rem;
+  /* Modern gradient background from dark navy to deep slate */
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  color: var(--color-text-inverse);
+  padding: var(--space-5) var(--space-4);
+  transition: all var(--transition-normal);
 }
 
 .logo {
-  font-weight: 700;
-  font-size: 1.125rem;
-  margin-bottom: 1.25rem;
+  /* Bold typography for name/logo with larger font size and modern font weight */
+  font-weight: var(--font-extrabold);
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-5);
+  color: var(--color-text-inverse);
+  letter-spacing: -0.025em;
+  line-height: var(--leading-tight);
 }
 
 .sidebar nav {
   display: grid;
-  gap: 0.5rem;
+  gap: var(--space-2);
 }
 
 .sidebar .nav-item {
-  color: #e5e7eb;
-  padding: 0.35rem 0.5rem;
-  border-radius: 8px;
+  color: var(--color-text-inverse);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
   text-decoration: none;
+  font-weight: var(--font-medium);
+  font-size: var(--text-base);
+  transition: all var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
 }
 
+.sidebar .nav-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left var(--transition-normal);
+}
+
+/* Modern hover states with smooth transitions */
 .sidebar .nav-item:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateX(4px);
+  box-shadow: var(--shadow-md);
+}
+
+.sidebar .nav-item:hover::before {
+  left: 100%;
+}
+
+/* Modern active state indicators using accent color */
+.sidebar .nav-item:active,
+.sidebar .nav-item.active {
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
+  transform: translateX(6px) scale(1.02);
+  box-shadow: var(--shadow-lg);
+}
+
+.sidebar .nav-item:active::after,
+.sidebar .nav-item.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--color-text-inverse);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  animation: slideIn var(--transition-bounce);
+}
+
+@keyframes slideIn {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    width: 4px;
+    opacity: 1;
+  }
+}
+
+.sidebar .nav-item:focus {
+  outline: 2px solid var(--color-text-inverse);
+  outline-offset: 2px;
 }
 
 /* Mobile: turn sidebar into a sticky top bar with horizontal scroll */
@@ -37,34 +105,42 @@
     position: sticky; /* visible while scrolling content */
     top: 0;
     z-index: 40;
-    padding: 0.6rem; /* compact padding on phones */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    background: #111827; /* ensure solid bg when sticky */
+    padding: var(--space-3); /* compact padding using design tokens */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    /* Maintain gradient background on mobile */
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .logo {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-4);
   }
 
   .sidebar nav {
     display: flex;
-    gap: 0.5rem;
+    gap: var(--space-3);
     overflow-x: auto; /* enable horizontal scroll */
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch; /* smooth iOS momentum */
     scrollbar-width: thin; /* Firefox thin scrollbar */
     scroll-snap-type: x proximity; /* gentle snapping */
-    padding-bottom: 0.25rem;
+    padding-bottom: var(--space-2);
 
-    /* Edge fade to indicate overflow content */
+    /* Improved edge fade with better visual cues */
     mask-image: linear-gradient(
       to right,
       transparent 0,
-      black 16px,
-      black calc(100% - 16px),
+      black var(--space-4),
+      black calc(100% - var(--space-4)),
       transparent 100%
     );
     -webkit-mask-image: linear-gradient(
       to right,
       transparent 0,
-      black 16px,
-      black calc(100% - 16px),
+      black var(--space-4),
+      black calc(100% - var(--space-4)),
       transparent 100%
     );
   }
@@ -72,21 +148,177 @@
   .sidebar .nav-item {
     flex: 0 0 auto; /* keep items on one row */
     white-space: nowrap; /* single-line labels */
-    font-size: 0.95rem;
-    padding: 0.4rem 0.6rem;
-    border-radius: 8px;
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    /* Enhanced touch target - minimum 44px height */
+    padding: var(--space-3) var(--space-4);
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    border-radius: var(--radius-lg);
     scroll-snap-align: start; /* snap each item at start edge */
+    transition: all var(--transition-smooth);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    /* Improved touch feedback */
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    position: relative;
+    overflow: hidden;
   }
 
-  /* Optional: nicer thin scrollbar styling (WebKit) */
+  .sidebar .nav-item::before {
+    left: -100%;
+  }
+
+  /* Enhanced mobile hover and active states */
+  .sidebar .nav-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px) scale(1.02);
+  }
+
+  .sidebar .nav-item:hover::before {
+    left: 100%;
+  }
+
+  .sidebar .nav-item:active,
+  .sidebar .nav-item.active {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    transform: translateY(0) scale(0.98);
+    box-shadow: var(--shadow-md);
+  }
+
+  /* Modern scrollbar styling with better visual cues */
   .sidebar nav::-webkit-scrollbar {
-    height: 6px;
+    height: 8px;
   }
   .sidebar nav::-webkit-scrollbar-track {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-full);
+    margin: 0 var(--space-4);
   }
   .sidebar nav::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.25);
-    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: var(--radius-full);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .sidebar nav::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.6);
+  }
+}
+/* Tablet-specific sidebar optimizations */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .sidebar {
+    padding: var(--space-6) var(--space-4);
+    /* Optimized for tablet portrait/landscape */
+  }
+  
+  .logo {
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-6);
+  }
+  
+  .sidebar .nav-item {
+    padding: var(--space-3) var(--space-3);
+    font-size: var(--text-sm);
+    /* Better spacing for tablet */
+  }
+}
+
+/* Tablet landscape orientation optimizations */
+@media (min-width: 768px) and (max-width: 1023px) and (orientation: landscape) {
+  .sidebar {
+    padding: var(--space-5) var(--space-3);
+  }
+  
+  .logo {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-5);
+  }
+  
+  .sidebar nav {
+    gap: var(--space-1);
+  }
+  
+  .sidebar .nav-item {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-xs);
+  }
+}/* Deskto
+p-specific sidebar enhancements */
+@media (min-width: 1024px) {
+  .sidebar {
+    padding: var(--space-10) var(--space-6);
+    /* Enhanced desktop styling */
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .logo {
+    font-size: var(--text-3xl);
+    margin-bottom: var(--space-10);
+    /* Better desktop typography */
+    letter-spacing: -0.05em;
+  }
+  
+  .sidebar nav {
+    gap: var(--space-3);
+  }
+  
+  .sidebar .nav-item {
+    padding: var(--space-4) var(--space-5);
+    font-size: var(--text-base);
+    /* Enhanced desktop hover effects */
+    position: relative;
+    overflow: visible;
+  }
+  
+  .sidebar .nav-item:hover {
+    transform: translateX(8px);
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .sidebar .nav-item:active,
+  .sidebar .nav-item.active {
+    transform: translateX(12px);
+    box-shadow: var(--shadow-xl);
+  }
+}
+
+/* Large desktop sidebar optimizations */
+@media (min-width: 1440px) {
+  .sidebar {
+    padding: var(--space-12) var(--space-8);
+  }
+  
+  .logo {
+    font-size: var(--text-4xl);
+    margin-bottom: var(--space-12);
+  }
+  
+  .sidebar nav {
+    gap: var(--space-4);
+  }
+  
+  .sidebar .nav-item {
+    padding: var(--space-5) var(--space-6);
+    font-size: var(--text-lg);
+  }
+}
+
+/* Ultra-wide desktop sidebar */
+@media (min-width: 1920px) {
+  .sidebar {
+    padding: var(--space-16) var(--space-10);
+  }
+  
+  .logo {
+    font-size: var(--text-4xl);
+    margin-bottom: var(--space-16);
+  }
+  
+  .sidebar .nav-item {
+    padding: var(--space-6) var(--space-8);
+    font-size: var(--text-xl);
   }
 }
