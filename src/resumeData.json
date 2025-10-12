@@ -165,6 +165,11 @@
         "label": "LinkedIn",
         "value": "https://www.linkedin.com/in/ashwinkeshwaram/",
         "href": "https://www.linkedin.com/in/ashwinkeshwaram/"
+      },
+      {
+        "label": "Resume",
+        "value": "Download",
+        "href": "./Resume.pdf"
       }
     ]
   }
