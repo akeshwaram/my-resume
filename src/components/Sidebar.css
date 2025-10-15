@@ -8,6 +8,13 @@
   color: var(--color-text-inverse);
   padding: var(--space-5) var(--space-4);
   transition: all var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ensure visitor counter is positioned at bottom on desktop */
+.sidebar .visitor-counter {
+  margin-top: auto;
 }
 
 .logo {
@@ -23,6 +30,9 @@
 .sidebar nav {
   display: grid;
   gap: var(--space-2);
+  flex-grow: 1;
+  /* Ensure nav doesn't interfere with counter positioning */
+  flex-shrink: 0;
 }
 
 .sidebar .nav-item {
@@ -111,6 +121,7 @@
     background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    flex-direction: column;
   }
 
   .logo {
@@ -118,8 +129,10 @@
     margin-bottom: var(--space-4);
   }
 
+  /* Create horizontal navigation area that includes nav items and counter */
   .sidebar nav {
     display: flex;
+    align-items: center;
     gap: var(--space-3);
     overflow-x: auto; /* enable horizontal scroll */
     overflow-y: hidden;
@@ -127,6 +140,11 @@
     scrollbar-width: thin; /* Firefox thin scrollbar */
     scroll-snap-type: x proximity; /* gentle snapping */
     padding-bottom: var(--space-2);
+    
+    /* Nav should grow to fill available space but allow counter to be positioned */
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0; /* Allow shrinking below content size if needed */
 
     /* Improved edge fade with better visual cues */
     mask-image: linear-gradient(
@@ -143,6 +161,14 @@
       black calc(100% - var(--space-4)),
       transparent 100%
     );
+  }
+
+  /* Position counter at the end of the navigation area on mobile */
+  .sidebar .visitor-counter {
+    /* Counter should be positioned after the nav items */
+    margin-left: auto;
+    margin-top: 0;
+    flex-shrink: 0; /* Don't allow counter to shrink */
   }
 
   .sidebar .nav-item {

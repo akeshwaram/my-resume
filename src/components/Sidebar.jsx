@@ -1,5 +1,6 @@
 import React from "react";
 import "./Sidebar.css";
+import VisitorCounter from "./VisitorCounter";
 
 export default function Sidebar({ name = "Resume", links = [] }) {
   return (
@@ -12,6 +13,7 @@ export default function Sidebar({ name = "Resume", links = [] }) {
           </a>
         ))}
       </nav>
+      <VisitorCounter />
     </aside>
   );
 }

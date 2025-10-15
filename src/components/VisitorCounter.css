@@ -1,0 +1,160 @@
+/* VisitorCounter Component Styles */
+.visitor-counter {
+  /* Position at bottom of sidebar using flexbox */
+  margin-top: auto;
+  padding: var(--space-3);
+  text-align: center;
+  
+  /* Subtle styling that doesn't distract from main content */
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: var(--font-medium);
+  
+  /* Visual separation from navigation items */
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  
+  /* Smooth transitions for any state changes */
+  transition: all var(--transition-smooth);
+}
+
+.visitor-counter__label {
+  display: inline-block;
+  margin-right: var(--space-2);
+  font-weight: var(--font-normal);
+  opacity: 0.8;
+}
+
+.visitor-counter__count {
+  display: inline-block;
+  font-weight: var(--font-semibold);
+  color: rgba(255, 255, 255, 0.9);
+  
+  /* Subtle highlight for the actual number */
+  background: rgba(255, 255, 255, 0.05);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Hover effect for subtle interactivity */
+.visitor-counter:hover {
+  color: rgba(255, 255, 255, 0.8);
+  border-top-color: rgba(255, 255, 255, 0.2);
+}
+
+.visitor-counter:hover .visitor-counter__count {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--color-text-inverse);
+}
+
+/* Mobile responsive design for horizontal navigation */
+@media (max-width: 768px) {
+  .visitor-counter {
+    /* Reset margin-top for mobile horizontal layout */
+    margin-top: 0;
+    margin-left: auto;
+    
+    /* Adjust padding for mobile */
+    padding: var(--space-2) var(--space-3);
+    
+    /* Remove top border, add left border for separation */
+    border-top: none;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    
+    /* Ensure it doesn't shrink in flex layout */
+    flex-shrink: 0;
+    white-space: nowrap;
+    
+    /* Align with navigation items */
+    display: flex;
+    align-items: center;
+    min-height: 44px; /* Match touch target size */
+  }
+  
+  .visitor-counter__label,
+  .visitor-counter__count {
+    font-size: var(--text-xs);
+  }
+  
+  .visitor-counter__label {
+    margin-right: var(--space-1);
+  }
+  
+  .visitor-counter__count {
+    padding: var(--space-1);
+  }
+}
+
+/* Tablet-specific optimizations */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .visitor-counter {
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--text-xs);
+  }
+}
+
+/* Desktop enhancements */
+@media (min-width: 1024px) {
+  .visitor-counter {
+    padding: var(--space-4) var(--space-5);
+    
+    /* Slightly larger on desktop */
+    font-size: var(--text-sm);
+  }
+  
+  .visitor-counter__count {
+    padding: var(--space-2) var(--space-3);
+  }
+}
+
+/* Large desktop optimizations */
+@media (min-width: 1440px) {
+  .visitor-counter {
+    padding: var(--space-5) var(--space-6);
+  }
+}
+
+/* Ultra-wide desktop */
+@media (min-width: 1920px) {
+  .visitor-counter {
+    padding: var(--space-6) var(--space-8);
+    font-size: var(--text-base);
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .visitor-counter,
+  .visitor-counter__count {
+    transition: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .visitor-counter {
+    color: var(--color-text-inverse);
+    border-top-color: var(--color-text-inverse);
+  }
+  
+  .visitor-counter__count {
+    background: transparent;
+    border-color: var(--color-text-inverse);
+    color: var(--color-text-inverse);
+  }
+}
+
+/* Forced colors mode (Windows High Contrast) */
+@media (forced-colors: active) {
+  .visitor-counter {
+    color: ButtonText;
+    border-top-color: ButtonText;
+  }
+  
+  .visitor-counter__count {
+    background: ButtonFace;
+    border-color: ButtonText;
+    color: ButtonText;
+  }
+}
