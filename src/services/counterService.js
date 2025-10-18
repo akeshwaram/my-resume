@@ -3,7 +3,7 @@
  * Handles fetching and incrementing visitor count with proper error handling
  */
 
-const API_ENDPOINT = 'https://api.counterapi.dev/v2/ashwinresumevisitcounter/resume/up';
+const API_ENDPOINT = 'https://v3dlp987le.execute-api.ap-south-1.amazonaws.com/dev/counter/up';
 const REQUEST_TIMEOUT = 5000; // 5 seconds
 
 /**
@@ -37,13 +37,21 @@ export const fetchVisitorCount = async () => {
     const data = await response.json();
     console.log('Full API response:', data);
 
-    // Validate response structure - the count is in data.data.up_count
-    if (!data.data || typeof data.data.up_count !== 'number' || data.data.up_count < 0) {
+    // Handle different response formats - try multiple possible structures
+    let count;
+    if (data && typeof data.Count === 'number') {
+      // counterapi.dev format
+      count = data.Count;
+    } else {
       throw new Error('Invalid response format from counter API');
     }
 
-    console.log('Extracted count:', data.data.up_count);
-    return data.data.up_count;
+    if (count < 0) {
+      throw new Error('Invalid count value from counter API');
+    }
+
+    console.log('Extracted count:', count);
+    return count;
   } catch (error) {
     clearTimeout(timeoutId);
 

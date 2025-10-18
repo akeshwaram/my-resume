@@ -24,7 +24,7 @@ export default function VisitorCounter() {
       try {
         setIsLoading(true);
         setHasError(false);
-        
+
         if (!hasIncrementedThisSession) {
           console.log('First time this session - incrementing counter');
           // Mark that we've incremented in this session before making the API call
@@ -35,14 +35,24 @@ export default function VisitorCounter() {
         } else {
           console.log('Already incremented this session - just fetching current count');
           // Use the non-incrementing endpoint to just get the current count
-          const response = await fetch('https://api.counterapi.dev/v2/ashwinresumevisitcounter/resume', {
+          const response = await fetch('https://v3dlp987le.execute-api.ap-south-1.amazonaws.com/dev/counter', {
             method: 'GET',
             headers: { 'Accept': 'application/json' },
           });
           
           if (response.ok) {
             const data = await response.json();
-            const currentCount = data.data.up_count;
+            console.log('Read-only API response:', data);
+            
+            // Handle different response formats
+            let currentCount;
+            if (data && typeof data.Count === 'number') {
+              currentCount = data.Count;
+            } 
+            else {
+              throw new Error('Invalid response format from read-only API');
+            }
+            
             console.log('Current count (no increment):', currentCount);
             setCount(currentCount);
           } else {
