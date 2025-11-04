@@ -3,7 +3,7 @@
  * Handles fetching and incrementing visitor count with proper error handling
  */
 
-const API_ENDPOINT = 'https://v3dlp987le.execute-api.ap-south-1.amazonaws.com/dev/counter/up';
+const API_ENDPOINT = 'https://y5495ve97i.execute-api.ap-south-1.amazonaws.com/dev/counter/up';
 const REQUEST_TIMEOUT = 5000; // 5 seconds
 
 /**

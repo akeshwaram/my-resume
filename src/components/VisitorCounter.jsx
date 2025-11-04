@@ -35,7 +35,7 @@ export default function VisitorCounter() {
         } else {
           console.log('Already incremented this session - just fetching current count');
           // Use the non-incrementing endpoint to just get the current count
-          const response = await fetch('https://v3dlp987le.execute-api.ap-south-1.amazonaws.com/dev/counter', {
+          const response = await fetch('https://y5495ve97i.execute-api.ap-south-1.amazonaws.com/dev/counter', {
             method: 'GET',
             headers: { 'Accept': 'application/json' },
           });
