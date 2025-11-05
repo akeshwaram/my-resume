@@ -13,9 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     
     env:
-      AWS_REGION: ${{ vars.AWS_REGION }}
-      S3_BUCKET_NAME: ${{ vars.S3_BUCKET_NAME }}
-      AWS_ROLE_ARN: ${{ vars.AWS_ROLE_ARN }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
+      AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
     
     steps:
       - name: Checkout code
@@ -70,8 +70,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
-          aws-region: ${{ vars.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
           role-session-name: GitHubActions-Deploy
       
       - name: Deploy to S3
