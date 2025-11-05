@@ -76,7 +76,7 @@ export default function VisitorCounter() {
   if (isLoading) {
     return (
       <div className="visitor-counter">
-        <span className="visitor-counter__label">You are visitor #</span>
+        <span className="visitor-counter__label">You are visitor</span>
         <span className="visitor-counter__count">Loading...</span>
       </div>
     );
@@ -86,7 +86,7 @@ export default function VisitorCounter() {
   if (hasError || count === null) {
     return (
       <div className="visitor-counter">
-        <span className="visitor-counter__label">You are visitor #</span>
+        <span className="visitor-counter__label">You are visitor</span>
         <span className="visitor-counter__count">---</span>
       </div>
     );
@@ -94,7 +94,7 @@ export default function VisitorCounter() {
 
   return (
     <div className="visitor-counter">
-      <span className="visitor-counter__label">You are visitor #</span>
+      <span className="visitor-counter__label">You are visitor</span>
       <span className="visitor-counter__count">{count.toLocaleString()}</span>
     </div>
   );
