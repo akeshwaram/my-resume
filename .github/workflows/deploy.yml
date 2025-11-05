@@ -1,0 +1,95 @@
+name: Deploy to S3
+
+on:
+  push:
+    branches: [dev]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    env:
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      S3_BUCKET_NAME: ${{ vars.S3_BUCKET_NAME }}
+      AWS_ROLE_ARN: ${{ vars.AWS_ROLE_ARN }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build application
+        run: npm run build
+      
+      - name: Verify build artifacts
+        run: |
+          echo "Verifying build artifacts..."
+          
+          # Check if dist directory exists
+          if [ ! -d "dist" ]; then
+            echo "❌ Error: dist directory not found after build"
+            echo "Available directories:"
+            ls -la
+            exit 1
+          fi
+          echo "✅ dist directory exists"
+          
+          # Check if main entry point exists
+          if [ ! -f "dist/index.html" ]; then
+            echo "❌ Error: index.html not found in dist directory"
+            echo "Contents of dist directory:"
+            ls -la dist/
+            exit 1
+          fi
+          echo "✅ index.html found in dist directory"
+          
+          # List all build artifacts for debugging
+          echo ""
+          echo "📦 Build artifacts summary:"
+          echo "Directory size: $(du -sh dist/ | cut -f1)"
+          echo "File count: $(find dist/ -type f | wc -l)"
+          echo ""
+          echo "📁 Detailed build artifacts:"
+          find dist/ -type f -exec ls -lh {} \; | sort -k9
+          
+          echo ""
+          echo "🎉 Build artifact verification completed successfully"
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+          role-session-name: GitHubActions-Deploy
+      
+      - name: Deploy to S3
+        run: |
+          echo "🚀 Starting deployment to S3 bucket: $S3_BUCKET_NAME"
+          
+          # Sync build artifacts to S3 with static website hosting optimizations
+          aws s3 sync dist/ s3://$S3_BUCKET_NAME/ \
+            --delete \
+            --cache-control "public, max-age=31536000" \
+            --exclude "*.html" \
+            --exclude "*.json"
+          
+          # Upload HTML files with shorter cache control for content updates
+          aws s3 sync dist/ s3://$S3_BUCKET_NAME/ \
+            --delete \
+            --cache-control "public, max-age=0, must-revalidate" \
+            --include "*.html" \
+            --include "*.json"
+          
+          echo "✅ Deployment to S3 completed successfully"
