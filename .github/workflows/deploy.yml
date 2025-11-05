@@ -78,6 +78,10 @@ jobs:
         run: |
           echo "🚀 Starting deployment to S3 bucket: $S3_BUCKET_NAME"
           
+          # Clean up existing assets folder to ensure fresh deployment
+          echo "🧹 Cleaning existing assets folder..."
+          aws s3 rm s3://$S3_BUCKET_NAME/assets/ --recursive || echo "No existing assets folder found"
+          
           # Sync build artifacts to S3 with static website hosting optimizations
           aws s3 sync dist/ s3://$S3_BUCKET_NAME/ \
             --delete \
