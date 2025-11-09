@@ -1,0 +1,22 @@
+{
+  "name": "resume-matcher-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda function for AI-powered resume matching using Bedrock",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "aws",
+    "lambda",
+    "bedrock",
+    "resume",
+    "ai"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-bedrock-agent-runtime": "^3.0.0"
+  }
+}
