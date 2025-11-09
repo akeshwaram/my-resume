@@ -25,7 +25,11 @@
   - Return formatted string suitable for AI analysis
   - _Requirements: 2.1, 2.2, 2.3, 2.4_
 
-- [ ] 3. Implement Bedrock AgentCore analysis service
+- [x] 3. Implement Bedrock AgentCore analysis service
+
+
+
+
   - Create `lambda/src/services/BedrockService.js`
   - Import BedrockAgentRuntimeClient and InvokeAgentCommand from `@aws-sdk/client-bedrock-agent-runtime`
   - Implement `analyzeJobMatch(jobDescription, formattedResume)` async method
