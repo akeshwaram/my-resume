@@ -139,7 +139,11 @@
   - Update frontend .env with Lambda Function URL as VITE_API_URL
   - _Requirements: 7.1, 7.2, 7.3_
 
-- [ ] 10. Create AWS deployment documentation and update README
+- [x] 10. Create AWS deployment documentation and update README
+
+
+
+
   - Create `lambda/AWS_DEPLOYMENT.md` documentation file
   - Document IAM role/policy requirements for Lambda (bedrock:InvokeAgent permission)
   - Document Bedrock Agent setup steps:

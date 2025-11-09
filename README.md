@@ -47,13 +47,35 @@ npm run dev
 
 ### Environment Variables
 
-Create a `.env.local` file with:
+#### Frontend Environment Variables
 
-```
-VITE_API_URL=your-lambda-function-url
+Create a `.env.local` file in the project root:
+
+```env
+# Lambda Function URL (get this after deploying the backend)
+VITE_API_URL=https://your-function-url.lambda-url.us-east-1.on.aws/
 ```
 
-Get the Lambda Function URL by deploying the backend (see below).
+#### Lambda Environment Variables
+
+The Lambda function requires these environment variables (configured during deployment):
+
+```env
+# AWS region where your Lambda and Bedrock Agent are deployed
+AWS_REGION=us-east-1
+
+# Bedrock Agent ID (from AWS Bedrock Console)
+BEDROCK_AGENT_ID=ABCDEFGHIJ
+
+# Bedrock Agent Alias ID (from AWS Bedrock Console)
+BEDROCK_AGENT_ALIAS_ID=TSTALIASID
+
+# CORS allowed origin (your frontend URL)
+ALLOWED_ORIGIN=http://localhost:5173
+# For production: ALLOWED_ORIGIN=https://yourdomain.com
+```
+
+**Note:** Lambda environment variables are set during deployment via SAM parameters or AWS Console/CLI. See deployment guides for details.
 
 ## Resume Data
 
@@ -71,20 +93,27 @@ Update your resume content in `src/resumeData.json`:
 
 ## AI Resume Matcher Setup
 
-The AI Resume Matcher requires a serverless backend deployed to AWS Lambda using AWS SAM.
+The AI Resume Matcher requires a serverless backend deployed to AWS Lambda. You can deploy using either:
+
+1. **AWS SAM (Recommended)** - Automated deployment with Infrastructure as Code
+2. **Manual AWS Deployment** - Step-by-step manual setup via AWS Console/CLI
 
 ### Prerequisites
 
+**For SAM Deployment:**
 1. **Install AWS SAM CLI**
    - Windows: `choco install aws-sam-cli`
    - Mac: `brew install aws-sam-cli`
    - Linux: See [SAM installation guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html)
-
 2. **AWS CLI configured**: `aws configure`
+3. **Create Bedrock Agent** in AWS Console (see deployment guides for instructions)
 
-3. **Create Bedrock Agent** in AWS Console (see deployment guide for instructions)
+**For Manual Deployment:**
+1. **AWS CLI configured**: `aws configure`
+2. **Node.js 18+** installed
+3. **Create Bedrock Agent** in AWS Console (see deployment guides for instructions)
 
-### Deploy (3 Commands)
+### Quick Deploy with SAM (Recommended)
 
 ```bash
 cd lambda
@@ -123,7 +152,10 @@ sam logs -n ResumeMatcherFunction --tail
 curl -X POST <FUNCTION_URL> -H "Content-Type: application/json" -d '{...}'
 ```
 
-See [lambda/SAM_DEPLOYMENT.md](lambda/SAM_DEPLOYMENT.md) for detailed deployment guide.
+### Deployment Documentation
+
+- **[lambda/SAM_DEPLOYMENT.md](lambda/SAM_DEPLOYMENT.md)** - Complete SAM deployment guide (recommended)
+- **[lambda/AWS_DEPLOYMENT.md](lambda/AWS_DEPLOYMENT.md)** - Manual AWS deployment guide (alternative)
 
 ## Development
 
@@ -160,9 +192,9 @@ npm run lint
 │   │   ├── index.js         # Lambda handler
 │   │   ├── services/        # Bedrock service
 │   │   └── utils/           # Resume formatter
-│   ├── scripts/             # Deployment scripts
-│   ├── DEPLOYMENT_GUIDE.md  # Detailed deployment guide
-│   └── QUICK_START.md       # Quick deployment guide
+│   ├── template.yaml        # SAM infrastructure template
+│   ├── SAM_DEPLOYMENT.md    # SAM deployment guide (recommended)
+│   └── AWS_DEPLOYMENT.md    # Manual AWS deployment guide
 └── index.html               # HTML entry point
 ```
 
@@ -220,18 +252,83 @@ The Lambda function is deployed separately. See [lambda/QUICK_START.md](lambda/Q
 
 ## Troubleshooting
 
-### CORS Errors
-- Verify `ALLOWED_ORIGIN` environment variable in Lambda matches your frontend URL
+### Common Issues
+
+#### CORS Errors
+**Symptoms:** Browser console shows CORS policy errors
+
+**Solutions:**
+- Verify `ALLOWED_ORIGIN` environment variable in Lambda matches your frontend URL exactly
 - Include protocol (http:// or https://)
+- No trailing slash in the origin URL
+- Clear browser cache and retry
+- Check Lambda Function URL CORS configuration
 
-### Lambda Timeout
+#### Lambda Timeout
+**Symptoms:** Request takes too long and fails
+
+**Solutions:**
 - Check CloudWatch logs: `aws logs tail /aws/lambda/resume-matcher-lambda --follow`
-- Verify Bedrock Agent is responding
-- Increase Lambda timeout if needed
+- Verify Bedrock Agent is responding (test in Bedrock Console)
+- Increase Lambda timeout to 60 seconds (Configuration → General configuration)
+- Check network connectivity between Lambda and Bedrock
 
-### "Agent not found" Error
+#### "Agent not found" Error
+**Symptoms:** Error message about missing or invalid agent
+
+**Solutions:**
 - Verify `BEDROCK_AGENT_ID` and `BEDROCK_AGENT_ALIAS_ID` are correct
-- Ensure agent is published and in the same region
+- Ensure agent is in "Prepared" state in Bedrock Console
+- Confirm agent is published with an active alias
+- Verify agent is in the same AWS region as Lambda function
+- Check IAM role has `bedrock:InvokeAgent` permission
+
+#### Invalid JSON Response
+**Symptoms:** Lambda returns malformed or unexpected data
+
+**Solutions:**
+- Review Bedrock Agent instructions in AWS Console
+- Test agent directly in Bedrock Console with sample input
+- Ensure agent instructions explicitly request JSON format
+- Try a different model (Claude 3.5 Sonnet recommended)
+- Check CloudWatch logs for parsing errors
+
+#### Function URL Not Working
+**Symptoms:** Cannot access Lambda Function URL
+
+**Solutions:**
+- Verify Function URL is created (Configuration → Function URL)
+- Check auth type is set to NONE for public access
+- Ensure public access permission is granted
+- Test with curl to isolate frontend issues
+- Verify HTTPS is used (not HTTP)
+
+### Viewing Logs
+
+**Using SAM:**
+```bash
+sam logs -n ResumeMatcherFunction --tail
+```
+
+**Using AWS CLI:**
+```bash
+aws logs tail /aws/lambda/resume-matcher-lambda --follow
+```
+
+**Using AWS Console:**
+1. Navigate to CloudWatch → Log groups
+2. Find `/aws/lambda/resume-matcher-lambda`
+3. View log streams
+
+### Getting Help
+
+1. Check CloudWatch logs for detailed error messages
+2. Review the deployment guides:
+   - [SAM Deployment Guide](lambda/SAM_DEPLOYMENT.md)
+   - [Manual AWS Deployment Guide](lambda/AWS_DEPLOYMENT.md)
+3. Verify all environment variables are set correctly
+4. Test Bedrock Agent independently in AWS Console
+5. Check AWS service health dashboard for outages
 
 ## Contributing
 
