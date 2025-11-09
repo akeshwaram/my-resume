@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Sidebar from "./components/Sidebar.jsx";
 import Section from "./components/Section.jsx";
+import ResumeMatcherSection from "./components/ResumeMatcherSection.jsx";
 import "./App.css";
 
 export default function App({ resumeData }) {
@@ -37,6 +38,7 @@ export default function App({ resumeData }) {
         name={about?.name}
         links={[
           { href: "#about", label: "About" },
+          { href: "#resume-matcher", label: "AI Job Match" },
           { href: "#skills", label: "Skills" },
           { href: "#certs", label: "Certifications" },
           { href: "#experience", label: "Experience" },
@@ -53,6 +55,7 @@ export default function App({ resumeData }) {
             <p className="meta">Location: {about.location}</p>
           )}
         </Section>
+        <ResumeMatcherSection resumeData={resumeData} />
         <Section
           id="skills"
           title="Skills"
