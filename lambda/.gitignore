@@ -18,3 +18,7 @@ Thumbs.db
 # Build artifacts
 dist/
 *.zip
+
+# SAM
+.aws-sam/
+samconfig.toml

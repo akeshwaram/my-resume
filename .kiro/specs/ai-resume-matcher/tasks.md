@@ -122,7 +122,12 @@
   - Position link prominently in navigation (after About, before Skills)
   - _Requirements: 6.1, 6.4_
 
-- [ ] 9. Create Lambda deployment package and deploy
+- [x] 9. Create Lambda deployment package and deploy
+
+
+
+
+
   - Create deployment script or use AWS CLI to package Lambda function
   - Zip lambda/src/ directory contents (index.js, services/, utils/, node_modules/)
   - Deploy Lambda function to AWS with Node.js 20.x runtime

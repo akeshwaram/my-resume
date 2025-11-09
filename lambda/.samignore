@@ -1,0 +1,42 @@
+# SAM ignore file - exclude these from deployment package
+
+# Scripts (not needed in Lambda)
+scripts/
+deploy.ps1
+deploy.sh
+deploy.bat
+
+# Documentation
+*.md
+DEPLOYMENT_*.md
+SAM_DEPLOYMENT.md
+QUICK_START.md
+
+# Development files
+.env
+.env.*
+.gitignore
+
+# Test files
+test/
+tests/
+*.test.js
+*.spec.js
+
+# Build artifacts
+*.zip
+lambda-deployment-*.zip
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# SAM
+.aws-sam/
+samconfig.toml

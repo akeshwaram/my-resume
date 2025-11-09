@@ -1,0 +1,70 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Resume Matcher Lambda Function with Bedrock Agent integration
+
+Parameters:
+  BedrockAgentId:
+    Type: String
+    Description: Bedrock Agent ID for resume analysis
+    
+  BedrockAgentAliasId:
+    Type: String
+    Description: Bedrock Agent Alias ID
+    
+  AllowedOrigin:
+    Type: String
+    Description: CORS allowed origin (e.g., https://yourdomain.com or http://localhost:5173)
+    Default: http://localhost:5173
+
+Globals:
+  Function:
+    Timeout: 60
+    MemorySize: 512
+    Runtime: nodejs20.x
+    Architectures:
+      - x86_64
+    Environment:
+      Variables:
+        AWS_REGION: !Ref AWS::Region
+        BEDROCK_AGENT_ID: !Ref BedrockAgentId
+        BEDROCK_AGENT_ALIAS_ID: !Ref BedrockAgentAliasId
+        ALLOWED_ORIGIN: !Ref AllowedOrigin
+
+Resources:
+  ResumeMatcherFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: resume-matcher-lambda
+      CodeUri: ./
+      Handler: src/index.handler
+      Description: AI-powered resume matching using AWS Bedrock
+      Policies:
+        - Statement:
+          - Effect: Allow
+            Action:
+              - bedrock:InvokeAgent
+            Resource: '*'
+        - AWSLambdaBasicExecutionRole
+      FunctionUrlConfig:
+        AuthType: NONE
+        Cors:
+          AllowOrigins:
+            - !Ref AllowedOrigin
+          AllowMethods:
+            - POST
+          AllowHeaders:
+            - content-type
+          MaxAge: 86400
+
+Outputs:
+  FunctionUrl:
+    Description: Lambda Function URL endpoint
+    Value: !GetAtt ResumeMatcherFunctionUrl.FunctionUrl
+    Export:
+      Name: ResumeMatcherFunctionUrl
+      
+  FunctionArn:
+    Description: Lambda Function ARN
+    Value: !GetAtt ResumeMatcherFunction.Arn
+    Export:
+      Name: ResumeMatcherFunctionArn
