@@ -13,7 +13,11 @@
   - Create `lambda/.env.example` file with required environment variables (AWS_REGION, BEDROCK_AGENT_ID, BEDROCK_AGENT_ALIAS_ID, ALLOWED_ORIGIN)
   - _Requirements: 7.1, 7.3_
 
-- [ ] 2. Implement resume data formatter utility
+- [x] 2. Implement resume data formatter utility
+
+
+
+
   - Create `lambda/src/utils/ResumeFormatter.js`
   - Implement `formatResumeData(resumeData)` static method that converts JSON to readable text
   - Format sections: about (name, location, content), skills (as bullet points), experience (with role, company, period, highlights), education, certifications
