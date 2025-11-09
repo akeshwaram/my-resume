@@ -1,6 +1,6 @@
-# Agent Core Migration Summary
+# Bedrock Runtime Migration Summary
 
-This document summarizes the migration from Bedrock Agents to Bedrock Agent Core.
+This document summarizes the migration from Bedrock Agents to Bedrock Runtime (direct model invocation).
 
 ## What Changed?
 
@@ -11,23 +11,23 @@ This document summarizes the migration from Bedrock Agents to Bedrock Agent Core
 - IAM permission: `bedrock:InvokeAgent`
 - SDK: `@aws-sdk/client-bedrock-agent-runtime`
 
-### After: Bedrock Agent Core
+### After: Bedrock Runtime
 - No manual agent creation needed
 - All configuration in code
 - Only need Model ID
 - IAM permission: `bedrock:InvokeModel`
-- Framework: `@aws/agent-core`
+- SDK: `@aws-sdk/client-bedrock-runtime`
 
 ## Files Modified
 
 ### 1. `package.json`
 - **Removed**: `@aws-sdk/client-bedrock-agent-runtime`
-- **Added**: `@aws/agent-core`
+- **Added**: `@aws-sdk/client-bedrock-runtime`
 
 ### 2. `src/services/bedrockService.js`
-- Complete rewrite to use Agent Core framework
-- Agent initialization with system prompts
-- Direct model invocation via Agent Core
+- Complete rewrite to use Bedrock Runtime SDK
+- Uses Converse API for model invocation
+- System prompts sent with each request
 - Simplified error handling
 
 ### 3. `template.yaml`

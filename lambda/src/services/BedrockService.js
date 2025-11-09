@@ -1,4 +1,4 @@
-import { Agent } from '@aws/agent-core';
+import { BedrockRuntimeClient, ConverseCommand } from '@aws-sdk/client-bedrock-runtime';
 
 class BedrockService {
   constructor() {
@@ -6,52 +6,10 @@ class BedrockService {
     this.region = process.env.AWS_REGION || 'us-east-1';
     this.timeout = 30000; // 30 seconds
     
-    // Initialize Agent Core agent
-    this.agent = null;
-  }
-
-  /**
-   * Initialize the Agent Core agent with system instructions
-   * @returns {Agent} Configured Agent Core instance
-   */
-  initializeAgent() {
-    if (this.agent) {
-      return this.agent;
-    }
-
-    const systemInstructions = `You are an expert technical recruiter analyzing a candidate's resume against a job description.
-
-Your task is to:
-1. Analyze the candidate's suitability for the role
-2. Provide a numerical score from 0-100 indicating overall fit
-3. Identify 3-5 key strengths where the candidate excels
-4. Identify 2-4 gaps where the candidate may not meet requirements
-5. Provide 3-5 recommendations for interview focus or role adjustments
-
-IMPORTANT: You must respond in valid JSON format with this exact structure:
-{
-  "score": <number between 0-100>,
-  "strengths": ["<string>", "<string>", ...],
-  "gaps": ["<string>", "<string>", ...],
-  "recommendations": ["<string>", "<string>", ...]
-}
-
-Be objective, thorough, and constructive in your analysis. Focus on technical skills, experience relevance, and qualification alignment.`;
-
-    this.agent = new Agent({
-      name: 'ResumeMatcherAgent',
-      description: 'AI agent for analyzing resume suitability against job descriptions',
-      modelId: this.modelId,
-      region: this.region,
-      systemPrompt: systemInstructions,
-      inferenceConfig: {
-        maxTokens: 2000,
-        temperature: 0.7,
-        topP: 0.9
-      }
+    // Initialize Bedrock Runtime client
+    this.client = new BedrockRuntimeClient({
+      region: this.region
     });
-
-    return this.agent;
   }
 
   /**
@@ -73,8 +31,33 @@ Provide your analysis in the required JSON format with score, strengths, gaps, a
   }
 
   /**
-   * Parse and validate Agent Core response
-   * @param {string} responseText - The response text from Agent Core
+   * Get system instructions for the AI model
+   * @returns {string} System instructions
+   */
+  getSystemInstructions() {
+    return `You are an expert technical recruiter analyzing a candidate's resume against a job description.
+
+Your task is to:
+1. Analyze the candidate's suitability for the role
+2. Provide a numerical score from 0-100 indicating overall fit
+3. Identify 3-5 key strengths where the candidate excels
+4. Identify 2-4 gaps where the candidate may not meet requirements
+5. Provide 3-5 recommendations for interview focus or role adjustments
+
+IMPORTANT: You must respond in valid JSON format with this exact structure:
+{
+  "score": <number between 0-100>,
+  "strengths": ["<string>", "<string>", ...],
+  "gaps": ["<string>", "<string>", ...],
+  "recommendations": ["<string>", "<string>", ...]
+}
+
+Be objective, thorough, and constructive in your analysis. Focus on technical skills, experience relevance, and qualification alignment.`;
+  }
+
+  /**
+   * Parse and validate Bedrock response
+   * @param {string} responseText - The response text from Bedrock
    * @returns {Object} Parsed analysis result
    */
   parseResponse(responseText) {
@@ -84,7 +67,7 @@ Provide your analysis in the required JSON format with score, strengths, gaps, a
       const jsonMatch = responseText.match(/\{[\s\S]*?"score"[\s\S]*?"strengths"[\s\S]*?"gaps"[\s\S]*?"recommendations"[\s\S]*?\}/);
       
       if (!jsonMatch) {
-        throw new Error('Unable to parse structured response from AI agent');
+        throw new Error('Unable to parse structured response from AI model');
       }
 
       const parsedData = JSON.parse(jsonMatch[0]);
@@ -94,7 +77,7 @@ Provide your analysis in the required JSON format with score, strengths, gaps, a
           !Array.isArray(parsedData.strengths) || 
           !Array.isArray(parsedData.gaps) || 
           !Array.isArray(parsedData.recommendations)) {
-        throw new Error('Invalid response structure from AI agent');
+        throw new Error('Invalid response structure from AI model');
       }
 
       // Ensure score is within valid range and rounded
@@ -103,37 +86,58 @@ Provide your analysis in the required JSON format with score, strengths, gaps, a
       return parsedData;
     } catch (error) {
       if (error instanceof SyntaxError) {
-        throw new Error('Failed to parse JSON response from AI agent');
+        throw new Error('Failed to parse JSON response from AI model');
       }
       throw error;
     }
   }
 
   /**
-   * Analyze job match using Agent Core
+   * Analyze job match using Bedrock Runtime
    * @param {string} jobDescription - The job description to analyze
    * @param {string} formattedResume - The formatted resume text
    * @returns {Promise<Object>} Analysis result with score, strengths, gaps, and recommendations
    */
   async analyzeJobMatch(jobDescription, formattedResume) {
     try {
-      // Initialize agent
-      const agent = this.initializeAgent();
-
       // Build the analysis prompt
       const prompt = this.buildPrompt(jobDescription, formattedResume);
+      const systemInstructions = this.getSystemInstructions();
+
+      // Create the Converse command
+      const command = new ConverseCommand({
+        modelId: this.modelId,
+        messages: [
+          {
+            role: 'user',
+            content: [
+              {
+                text: prompt
+              }
+            ]
+          }
+        ],
+        system: [
+          {
+            text: systemInstructions
+          }
+        ],
+        inferenceConfig: {
+          maxTokens: 2000,
+          temperature: 0.7,
+          topP: 0.9
+        }
+      });
 
       // Create timeout promise
       const timeoutPromise = new Promise((_, reject) => {
         setTimeout(() => {
-          reject(new Error('AI agent request timed out after 30 seconds. Please try again.'));
+          reject(new Error('AI model request timed out after 30 seconds. Please try again.'));
         }, this.timeout);
       });
 
-      // Invoke the agent with the prompt
-      const responsePromise = agent.invoke({
-        input: prompt
-      });
+      // Invoke the model with timeout
+      const responsePromise = this.client.send(command);
 
       // Race between the actual request and timeout
       const response = await Promise.race([
@@ -141,20 +145,25 @@ Provide your analysis in the required JSON format with score, strengths, gaps, a
         timeoutPromise
       ]);
 
-      if (!response || !response.output) {
-        throw new Error('No response received from AI agent');
+      // Extract text from response
+      if (!response.output || !response.output.message || !response.output.message.content) {
+        throw new Error('No response received from AI model');
       }
 
+      const responseText = response.output.message.content
+        .map(item => item.text)
+        .join('');
+
       // Parse the response
-      const analysisResult = this.parseResponse(response.output);
+      const analysisResult = this.parseResponse(responseText);
 
       return analysisResult;
     } catch (error) {
       // Handle specific error types with meaningful messages
       if (error.name === 'ResourceNotFoundException') {
-        throw new Error('AI model not found. Please verify model configuration.');
+        throw new Error('AI model not found. Please verify model configuration and ensure model access is enabled in Bedrock Console.');
       } else if (error.name === 'AccessDeniedException') {
-        throw new Error('Access denied to AI model. Please check IAM permissions.');
+        throw new Error('Access denied to AI model. Please check IAM permissions and ensure model access is enabled in Bedrock Console.');
       } else if (error.name === 'ThrottlingException') {
         throw new Error('Too many requests to AI service. Please try again in a moment.');
       } else if (error.message.includes('timed out')) {

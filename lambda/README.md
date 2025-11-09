@@ -11,15 +11,15 @@ sam deploy --guided
 
 See [SAM_DEPLOYMENT.md](SAM_DEPLOYMENT.md) for detailed deployment guide.
 
-## What is Agent Core?
+## What is Bedrock Runtime?
 
-This Lambda uses **AWS Bedrock Agent Core**, an open-source framework for building agentic applications. Unlike traditional Bedrock Agents that require manual setup in the AWS Console, Agent Core allows you to define all agent logic, instructions, and configuration directly in code.
+This Lambda uses **AWS Bedrock Runtime SDK** for direct model invocation. Unlike traditional Bedrock Agents that require manual setup in the AWS Console, this approach allows you to define all logic, instructions, and configuration directly in code.
 
 **Benefits:**
 - ✅ No manual agent creation needed
 - ✅ Everything in code (fully automated deployment)
-- ✅ Version controlled agent configuration
-- ✅ Easy to test and iterate
+- ✅ Version controlled configuration
+- ✅ Direct model access (faster, simpler)
 
 ## Documentation
 
@@ -36,9 +36,9 @@ Lambda Function URL
     ↓
 Lambda Function (Node.js 20)
     ↓
-Agent Core Framework
+AWS Bedrock Runtime SDK
     ↓
-AWS Bedrock Runtime API
+Bedrock Converse API
     ↓
 AI Model (Claude 3)
     ↓
@@ -47,13 +47,13 @@ Analysis Results (JSON)
 
 ## Features
 
-- **AI-Powered Analysis**: Uses AWS Bedrock Agent Core for intelligent resume matching
+- **AI-Powered Analysis**: Uses AWS Bedrock Runtime for intelligent resume matching
 - **Fully Automated**: No manual agent setup required
 - **Serverless**: No servers to manage, scales automatically
 - **CORS Enabled**: Secure cross-origin requests from your frontend
 - **Function URL**: Public HTTPS endpoint (no API Gateway needed)
 - **Fast**: Typically responds in 5-10 seconds
-- **Code-Based Configuration**: All agent logic in version-controlled code
+- **Code-Based Configuration**: All logic in version-controlled code
 
 ## Environment Variables
 
@@ -131,9 +131,9 @@ aws logs tail /aws/lambda/resume-matcher-lambda --follow
 ## Tech Stack
 
 - **Runtime**: Node.js 20.x
-- **AWS Services**: Lambda, Bedrock, CloudWatch
-- **Framework**: AWS Bedrock Agent Core
-- **Dependencies**: @aws/agent-core
+- **AWS Services**: Lambda, Bedrock Runtime, CloudWatch
+- **SDK**: AWS SDK for JavaScript v3
+- **Dependencies**: @aws-sdk/client-bedrock-runtime
 
 ## Project Structure
 

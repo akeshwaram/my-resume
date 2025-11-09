@@ -1,17 +1,17 @@
 # AWS Deployment Guide (Manual)
 
-This guide covers manual deployment of the Resume Matcher Lambda function using AWS Bedrock Agent Core via the AWS Console and CLI. For automated deployment using AWS SAM, see [SAM_DEPLOYMENT.md](SAM_DEPLOYMENT.md).
+This guide covers manual deployment of the Resume Matcher Lambda function using AWS Bedrock Runtime via the AWS Console and CLI. For automated deployment using AWS SAM, see [SAM_DEPLOYMENT.md](SAM_DEPLOYMENT.md).
 
 ## Overview
 
-The Resume Matcher Lambda function with Agent Core requires:
+The Resume Matcher Lambda function with Bedrock Runtime requires:
 1. Enable Bedrock model access (one-time)
 2. IAM role with appropriate permissions
 3. Lambda function deployment
 4. Lambda Function URL configuration
 5. Environment variable configuration
 
-**Note:** With Agent Core, you do NOT need to manually create a Bedrock Agent. Everything is in code!
+**Note:** With Bedrock Runtime, you do NOT need to manually create a Bedrock Agent. Everything is in code!
 
 ## Prerequisites
 
@@ -614,10 +614,10 @@ aws iam delete-policy \
 
 **Note:** With Agent Core, there's no Bedrock Agent to delete!
 
-## Comparison: Manual vs SAM Deployment with Agent Core
+## Comparison: Manual vs SAM Deployment with Bedrock Runtime
 
-| Aspect | Manual Deployment | SAM + Agent Core |
-|--------|------------------|------------------|
+| Aspect | Manual Deployment | SAM + Bedrock Runtime |
+|--------|------------------|----------------------|
 | **Setup Time** | 20-30 minutes | 5-10 minutes |
 | **Agent Creation** | Not needed | Not needed |
 | **IAM Role** | Manual creation | Automatic |
@@ -644,7 +644,7 @@ aws iam delete-policy \
 7. ✅ Set up CloudWatch alarms (optional)
 8. 🚀 Deploy frontend to production
 
-## What's Different with Agent Core?
+## What's Different with Bedrock Runtime?
 
 **Before (Bedrock Agents):**
 - Enable model access
@@ -654,12 +654,12 @@ aws iam delete-policy \
 - Copy Agent ID and Alias ID
 - Deploy Lambda
 
-**Now (Agent Core):**
+**Now (Bedrock Runtime):**
 - Enable model access (one-time)
 - Deploy Lambda (everything in code)
 - Done!
 
-All agent logic and instructions are now in your Lambda code (`bedrockService.js`), making deployment fully automated.
+All logic and instructions are now in your Lambda code (`bedrockService.js`), making deployment fully automated.
 
 ## Additional Resources
 

@@ -1,8 +1,8 @@
 # SAM Deployment Guide
 
-This guide shows you how to deploy the Resume Matcher Lambda using AWS SAM (Serverless Application Model) with Bedrock Agent Core.
+This guide shows you how to deploy the Resume Matcher Lambda using AWS SAM (Serverless Application Model) with Bedrock Runtime.
 
-## Why SAM + Agent Core?
+## Why SAM + Bedrock Runtime?
 
 SAM provides:
 - ✅ Infrastructure as Code (IaC)
@@ -12,11 +12,11 @@ SAM provides:
 - ✅ Local testing capabilities
 - ✅ No manual script management
 
-Agent Core provides:
+Bedrock Runtime provides:
 - ✅ No manual agent creation needed
 - ✅ Everything in code (fully automated)
-- ✅ Built-in orchestration framework
-- ✅ Easy to extend with tools and memory
+- ✅ Direct model invocation (fast and simple)
+- ✅ Full control over prompts and configuration
 
 ## Prerequisites
 
@@ -338,8 +338,8 @@ This removes:
 
 ## Advantages Over Manual Deployment
 
-| Feature | Manual Deployment | SAM + Agent Core |
-|---------|------------------|------------------|
+| Feature | Manual Deployment | SAM + Bedrock Runtime |
+|---------|------------------|----------------------|
 | Agent Creation | Manual in Console | Not needed |
 | Agent Configuration | Manual in Console | In code |
 | IAM Role Creation | Manual | Automatic |
@@ -364,7 +364,7 @@ This removes:
 7. ✅ Test the integration
 8. 🚀 Deploy frontend
 
-## What's Different with Agent Core?
+## What's Different with Bedrock Runtime?
 
 **Before (Bedrock Agents):**
 - Create agent manually in Console
@@ -373,12 +373,12 @@ This removes:
 - Copy Agent ID and Alias ID
 - Deploy Lambda with those IDs
 
-**Now (Agent Core):**
+**Now (Bedrock Runtime):**
 - Enable model access (one-time)
 - Deploy Lambda (everything in code)
 - Done!
 
-All agent logic, instructions, and configuration are now in your Lambda code, making it fully automated and version-controlled.
+All logic, instructions, and configuration are now in your Lambda code, making it fully automated and version-controlled.
 
 ## Resources
 

@@ -21,7 +21,7 @@ The AI Resume Matcher feature allows recruiters and hiring managers to:
 
 1. User enters a job description
 2. System sends the job description and resume data to AWS Lambda
-3. Lambda uses AWS Bedrock Agent Core to invoke AI model for analysis
+3. Lambda uses AWS Bedrock Runtime to invoke AI model for analysis
 4. Results are displayed with color-coded scoring and detailed feedback
 
 ## Setup
@@ -90,7 +90,7 @@ Update your resume content in `src/resumeData.json`:
 
 ## AI Resume Matcher Setup
 
-The AI Resume Matcher uses **AWS Bedrock Agent Core** for AI-powered analysis. This approach eliminates the need for manual agent creation - everything is in code!
+The AI Resume Matcher uses **AWS Bedrock Runtime** for AI-powered analysis. This approach eliminates the need for manual agent creation - everything is in code!
 
 The backend requires a serverless Lambda function deployed to AWS. You can deploy using either:
 
