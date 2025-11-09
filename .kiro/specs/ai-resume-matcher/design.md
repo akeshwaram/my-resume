@@ -13,8 +13,8 @@ The architecture follows a client-server pattern where the React frontend handle
 ```
 ┌─────────────────┐         ┌──────────────────┐         ┌─────────────────┐
 │                 │         │                  │         │                 │
-│  React Frontend │◄───────►│  Node.js Backend │◄───────►│   AWS Bedrock   │
-│   (Vite App)    │  HTTPS  │   (Express API)  │         │                 │
+│  React Frontend │◄───────►│  AWS Lambda      │◄───────►│   AWS Bedrock   │
+│   (Vite App)    │  HTTPS  │  (Function URL)  │         │   AgentCore     │
 │                 │         │                  │         │                 │
 │ resumeData.json │         │                  │         │                 │
 └─────────────────┘         └──────────────────┘         └─────────────────┘
@@ -28,11 +28,12 @@ The architecture follows a client-server pattern where the React frontend handle
    - Results display (score + feedback)
    - Integration with existing navigation
 
-2. **API Layer** (Node.js Backend)
-   - Express.js REST API
+2. **Serverless API Layer** (AWS Lambda)
+   - Lambda Function URL for HTTPS endpoint
    - Request validation
    - AWS SDK integration
    - Error handling and logging
+   - CORS configuration
 
 3. **AI Processing Layer** (AWS Bedrock + AgentCore)
    - Resume data formatting from JSON
@@ -100,9 +101,9 @@ interface LoadingSpinnerProps {
 }
 ```
 
-### Backend API
+### Lambda API
 
-#### API Endpoint: POST /api/analyze-resume
+#### Lambda Function URL Endpoint: POST
 
 **Request**:
 ```json
@@ -146,7 +147,18 @@ interface LoadingSpinnerProps {
 }
 ```
 
-#### API Service Layer
+#### Lambda Handler
+
+**Main Handler**:
+```javascript
+exports.handler = async (event) => {
+  // Parse request body
+  // Validate input
+  // Format resume data
+  // Call Bedrock service
+  // Return response with CORS headers
+}
+```
 
 **ResumeFormatter**:
 ```javascript
@@ -166,13 +178,14 @@ class BedrockService {
 
 ### AWS Integration
 
-#### Bedrock Configuration
-- **Model**: Claude 3 Sonnet (or configurable via environment)
-- **Model ID**: `anthropic.claude-3-sonnet-20240229-v1:0`
-- **Region**: Configured via `AWS_REGION` environment variable
-- **Access**: IAM role with `bedrock:InvokeModel` permission
+#### Lambda Configuration
+- **Runtime**: Node.js 20.x
+- **Memory**: 512 MB (adjustable based on performance)
+- **Timeout**: 60 seconds (to accommodate 30-second Bedrock timeout + processing)
+- **Function URL**: Enabled with CORS configuration
+- **Auth**: NONE (public access)
 
-#### AgentCore Integration
+#### Bedrock AgentCore Integration
 AgentCore will be used to orchestrate the Bedrock interaction:
 
 ```javascript
@@ -185,6 +198,11 @@ const agentConfig = {
   sessionId: generateSessionId()
 };
 ```
+
+#### IAM Permissions
+Lambda execution role requires:
+- `bedrock:InvokeAgent` - To call Bedrock Agent
+- `logs:CreateLogGroup`, `logs:CreateLogStream`, `logs:PutLogEvents` - For CloudWatch logging
 
 ## Data Models
 
@@ -311,7 +329,7 @@ The backend will convert the JSON structure into a human-readable format:
    - 500: Server error (show generic error with retry)
    - Display error in dedicated error component
 
-### Backend Error Scenarios
+### Lambda Error Scenarios
 
 1. **Data Validation Errors**
    - Missing or invalid resume data structure
@@ -319,7 +337,7 @@ The backend will convert the JSON structure into a human-readable format:
    - Return 400 with message: "Invalid resume data provided"
 
 2. **Bedrock Errors**
-   - Model invocation failure
+   - Agent invocation failure
    - Timeout (>30 seconds)
    - Invalid response format
    - Return 500 with message: "Analysis service temporarily unavailable. Please try again."
@@ -330,7 +348,7 @@ The backend will convert the JSON structure into a human-readable format:
    - Return 400 with specific validation message
 
 ### Error Logging
-- Backend logs all errors with context (timestamp, request ID, error details)
+- Lambda logs all errors to CloudWatch with context (timestamp, request ID, error details)
 - Use structured logging (JSON format)
 - Include correlation IDs for request tracking
 
@@ -356,24 +374,23 @@ The backend will convert the JSON structure into a human-readable format:
    - Responsive design (desktop, tablet, mobile)
    - Accessibility (keyboard navigation, screen readers)
 
-### Backend Testing
+### Lambda Testing
 
 1. **Unit Tests** (Jest)
-   - ResumeService.getResumeFromS3()
+   - ResumeFormatter.formatResumeData()
    - BedrockService.analyzeJobMatch()
-   - Request validation middleware
+   - Lambda handler with mocked events
    - Error handling utilities
 
 2. **Integration Tests**
-   - Full API endpoint flow with mocked AWS services
-   - S3 retrieval with mock data
+   - Full Lambda handler flow with mocked AWS services
    - Bedrock invocation with mock responses
-   - Error scenarios (S3 failure, Bedrock timeout)
+   - Error scenarios (Bedrock timeout, validation errors)
 
 3. **Manual Testing**
    - Real AWS service integration (dev environment)
    - End-to-end flow with actual resume and job descriptions
-   - Performance testing (response times)
+   - Performance testing (response times, cold starts)
    - Error recovery scenarios
 
 ### Test Data
@@ -392,16 +409,16 @@ The backend will convert the JSON structure into a human-readable format:
 ## Security Considerations
 
 ### Credential Management
-- AWS credentials stored in environment variables (never in code)
-- Backend uses IAM roles when deployed to AWS (EC2, Lambda, ECS)
+- AWS credentials managed by Lambda execution role (no credentials in code)
+- Lambda uses IAM role for Bedrock access
 - Local development uses AWS CLI profiles or environment variables
 - No credentials exposed to frontend
 
 ### API Security
-- CORS configuration restricts API access to resume website domain
-- Rate limiting to prevent abuse (e.g., 10 requests per minute per IP)
-- Input validation and sanitization
-- HTTPS required for all API communication
+- CORS configuration restricts API access to resume website domain via ALLOWED_ORIGIN
+- Lambda Function URL provides HTTPS endpoint automatically
+- Input validation and sanitization in Lambda handler
+- Consider adding AWS WAF for rate limiting if needed (optional for MVP)
 
 ### Data Privacy
 - Job descriptions are not stored (processed in memory only)
@@ -411,44 +428,41 @@ The backend will convert the JSON structure into a human-readable format:
 
 ## Deployment Considerations
 
-### Backend Deployment Options
+### Lambda Deployment
 
-**Option 1: AWS Lambda + API Gateway** (Recommended)
+**Deployment Process**:
+1. Package Lambda function code and dependencies into ZIP file
+2. Upload to AWS Lambda via console, CLI, or IaC (CloudFormation/Terraform)
+3. Configure Lambda environment variables
+4. Create Lambda Function URL
+5. Configure CORS on Function URL
+6. Test endpoint
+
+**Benefits**:
 - Serverless, scales automatically
-- Pay per request
+- Pay per request (~$0.20 per million requests)
+- No server management
 - Easy integration with AWS services
-- Use Lambda environment variables for configuration
-
-**Option 2: AWS ECS/Fargate**
-- Containerized Node.js application
-- More control over runtime environment
-- Suitable for additional backend features
-
-**Option 3: EC2 Instance**
-- Traditional server deployment
-- More manual management
-- Lower cost for consistent traffic
+- Built-in HTTPS via Function URL
 
 ### Frontend Deployment
 - Existing Vite build process remains unchanged
 - API endpoint URL configured via environment variable
-- Build-time configuration for production API URL
+- Build-time configuration for production Lambda Function URL
 
 ### Environment Variables
 
-**Backend**:
+**Lambda**:
 ```
 AWS_REGION=us-east-1
 BEDROCK_AGENT_ID=<agent-id>
 BEDROCK_AGENT_ALIAS_ID=<alias-id>
-BEDROCK_MODEL_ID=anthropic.claude-3-sonnet-20240229-v1:0
-CORS_ORIGIN=https://myresume.com
-PORT=3000
+ALLOWED_ORIGIN=https://myresume.com
 ```
 
 **Frontend**:
 ```
-VITE_API_URL=https://api.myresume.com
+VITE_API_URL=https://abc123.lambda-url.us-east-1.on.aws
 ```
 
 ## Integration with Existing Application
@@ -476,15 +490,19 @@ Frontend Validation
     ↓
 Frontend: Prepare payload (jobDescription + resumeData)
     ↓
-API Request (POST /api/analyze-resume)
+HTTPS POST to Lambda Function URL
     ↓
-Backend: Format resume data to readable text
+Lambda: Parse request body
     ↓
-Backend: Invoke Bedrock via AgentCore
+Lambda: Validate input
     ↓
-Backend: Parse and Structure Response
+Lambda: Format resume data to readable text
     ↓
-API Response (JSON)
+Lambda: Invoke Bedrock via AgentCore
+    ↓
+Lambda: Parse and Structure Response
+    ↓
+Lambda: Return JSON with CORS headers
     ↓
 Frontend: Display Results
 ```
@@ -497,14 +515,15 @@ Frontend: Display Results
 - Memoize expensive computations
 - Optimize re-renders with React.memo
 
-### Backend
+### Lambda
 - Resume formatting is fast (in-memory operation)
-- Connection pooling for AWS SDK clients
-- Implement request timeout (30 seconds)
-- Compress API responses (gzip)
+- AWS SDK client reuse across invocations (warm starts)
+- Implement request timeout (30 seconds for Bedrock)
+- Lambda cold starts: 1-2 seconds (first invocation or after idle period)
 
 ### Expected Performance Metrics
-- API response time: < 10 seconds (typical)
+- Lambda cold start: 1-2 seconds (infrequent)
+- Lambda warm execution: < 10 seconds total
 - Resume formatting: < 10ms
 - Bedrock analysis: 5-8 seconds
 - Frontend render: < 100ms
