@@ -1,6 +1,6 @@
 # Resume Matcher Lambda Function
 
-AWS Lambda function that provides AI-powered resume matching using AWS Bedrock.
+AWS Lambda function that provides AI-powered resume matching using AWS Bedrock Agent Core.
 
 ## Quick Start
 
@@ -10,6 +10,16 @@ sam deploy --guided
 ```
 
 See [SAM_DEPLOYMENT.md](SAM_DEPLOYMENT.md) for detailed deployment guide.
+
+## What is Agent Core?
+
+This Lambda uses **AWS Bedrock Agent Core**, an open-source framework for building agentic applications. Unlike traditional Bedrock Agents that require manual setup in the AWS Console, Agent Core allows you to define all agent logic, instructions, and configuration directly in code.
+
+**Benefits:**
+- ✅ No manual agent creation needed
+- ✅ Everything in code (fully automated deployment)
+- ✅ Version controlled agent configuration
+- ✅ Easy to test and iterate
 
 ## Documentation
 
@@ -26,7 +36,9 @@ Lambda Function URL
     ↓
 Lambda Function (Node.js 20)
     ↓
-AWS Bedrock Agent
+Agent Core Framework
+    ↓
+AWS Bedrock Runtime API
     ↓
 AI Model (Claude 3)
     ↓
@@ -35,17 +47,18 @@ Analysis Results (JSON)
 
 ## Features
 
-- **AI-Powered Analysis**: Uses AWS Bedrock for intelligent resume matching
+- **AI-Powered Analysis**: Uses AWS Bedrock Agent Core for intelligent resume matching
+- **Fully Automated**: No manual agent setup required
 - **Serverless**: No servers to manage, scales automatically
 - **CORS Enabled**: Secure cross-origin requests from your frontend
 - **Function URL**: Public HTTPS endpoint (no API Gateway needed)
 - **Fast**: Typically responds in 5-10 seconds
+- **Code-Based Configuration**: All agent logic in version-controlled code
 
 ## Environment Variables
 
 - `AWS_REGION` - AWS region (e.g., us-east-1)
-- `BEDROCK_AGENT_ID` - Your Bedrock Agent ID
-- `BEDROCK_AGENT_ALIAS_ID` - Your Bedrock Agent Alias ID
+- `BEDROCK_MODEL_ID` - Bedrock foundation model ID (e.g., anthropic.claude-3-sonnet-20240229-v1:0)
 - `ALLOWED_ORIGIN` - CORS allowed origin (your frontend URL)
 
 ## API
@@ -119,7 +132,8 @@ aws logs tail /aws/lambda/resume-matcher-lambda --follow
 
 - **Runtime**: Node.js 20.x
 - **AWS Services**: Lambda, Bedrock, CloudWatch
-- **Dependencies**: @aws-sdk/client-bedrock-agent-runtime
+- **Framework**: AWS Bedrock Agent Core
+- **Dependencies**: @aws/agent-core
 
 ## Project Structure
 

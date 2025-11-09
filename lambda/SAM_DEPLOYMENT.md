@@ -1,8 +1,8 @@
 # SAM Deployment Guide
 
-This guide shows you how to deploy the Resume Matcher Lambda using AWS SAM (Serverless Application Model).
+This guide shows you how to deploy the Resume Matcher Lambda using AWS SAM (Serverless Application Model) with Bedrock Agent Core.
 
-## Why SAM?
+## Why SAM + Agent Core?
 
 SAM provides:
 - ✅ Infrastructure as Code (IaC)
@@ -11,6 +11,12 @@ SAM provides:
 - ✅ Easy updates and rollbacks
 - ✅ Local testing capabilities
 - ✅ No manual script management
+
+Agent Core provides:
+- ✅ No manual agent creation needed
+- ✅ Everything in code (fully automated)
+- ✅ Built-in orchestration framework
+- ✅ Easy to extend with tools and memory
 
 ## Prerequisites
 
@@ -45,40 +51,20 @@ SAM provides:
 
 3. **Docker installed** (for local testing - optional)
 
-## Quick Deployment (3 Commands)
+## Quick Deployment (2 Commands)
 
-### Step 1: Set Up Bedrock Agent
+### Step 1: Enable Model Access (One-Time Setup)
 
-Before deploying, create your Bedrock Agent:
+Before first deployment, enable model access in Bedrock:
 
-1. Go to AWS Bedrock Console → Agents → Create Agent
-2. Name: `resume-matcher-agent`
-3. Choose model (e.g., Claude 3 Sonnet)
-4. Add instructions:
+1. Go to AWS Bedrock Console
+2. Navigate to **Model access** in the left sidebar
+3. Click **Manage model access** or **Enable specific models**
+4. Select **Claude 3 Sonnet** (or your preferred model)
+5. Click **Request model access** or **Save changes**
+6. Wait for approval (usually instant)
 
-```
-You are an expert technical recruiter analyzing a candidate's resume against a job description.
-
-When given a job description and resume, you must:
-1. Analyze the candidate's suitability for the role
-2. Provide a numerical score from 0-100 indicating overall fit
-3. Identify 3-5 key strengths where the candidate excels
-4. Identify 2-4 gaps where the candidate may not meet requirements
-5. Provide 3-5 recommendations for interview focus or role adjustments
-
-Always respond in valid JSON format with this structure:
-{
-  "score": <number between 0-100>,
-  "strengths": [<array of strings>],
-  "gaps": [<array of strings>],
-  "recommendations": [<array of strings>]
-}
-
-Be objective, thorough, and constructive in your analysis.
-```
-
-5. Create and publish an alias
-6. Copy the **Agent ID** and **Agent Alias ID**
+**Note:** This is a one-time setup per AWS region. Once enabled, you never need to do this again.
 
 ### Step 2: Build
 
@@ -97,8 +83,7 @@ sam deploy --guided
 You'll be prompted for:
 - **Stack Name**: `resume-matcher-stack` (press Enter for default)
 - **AWS Region**: `us-east-1` (or your preferred region)
-- **Parameter BedrockAgentId**: Paste your Agent ID
-- **Parameter BedrockAgentAliasId**: Paste your Agent Alias ID
+- **Parameter BedrockModelId**: `anthropic.claude-3-sonnet-20240229-v1:0` (press Enter for default)
 - **Parameter AllowedOrigin**: `http://localhost:5173` (for dev) or `https://yourdomain.com` (for prod)
 - **Confirm changes before deploy**: Y
 - **Allow SAM CLI IAM role creation**: Y
@@ -134,6 +119,17 @@ Create `.env.local` in your project root:
 ```
 VITE_API_URL=https://abc123xyz.lambda-url.us-east-1.on.aws/
 ```
+
+## Available Models
+
+You can use any Bedrock foundation model. Common options:
+
+- **Claude 3.5 Sonnet**: `anthropic.claude-3-5-sonnet-20240620-v1:0` (recommended)
+- **Claude 3 Sonnet**: `anthropic.claude-3-sonnet-20240229-v1:0` (default)
+- **Claude 3 Haiku**: `anthropic.claude-3-haiku-20240307-v1:0` (faster, cheaper)
+- **Claude 3 Opus**: `anthropic.claude-3-opus-20240229-v1:0` (most capable)
+
+To change models, update the `BedrockModelId` parameter during deployment.
 
 ## Testing
 
@@ -182,12 +178,12 @@ curl -X POST <FUNCTION_URL> \
 sam build && sam deploy
 ```
 
-### Update Environment Variables
+### Update Configuration
 
 Edit `samconfig.toml` and update the `parameter_overrides` line:
 
 ```toml
-parameter_overrides = "BedrockAgentId=\"NEW_ID\" BedrockAgentAliasId=\"NEW_ALIAS\" AllowedOrigin=\"https://newdomain.com\""
+parameter_overrides = "BedrockModelId=\"anthropic.claude-3-5-sonnet-20240620-v1:0\" AllowedOrigin=\"https://newdomain.com\""
 ```
 
 Then deploy:
@@ -199,8 +195,7 @@ Or use parameters directly:
 ```bash
 sam deploy \
   --parameter-overrides \
-    BedrockAgentId=NEW_ID \
-    BedrockAgentAliasId=NEW_ALIAS \
+    BedrockModelId=anthropic.claude-3-5-sonnet-20240620-v1:0 \
     AllowedOrigin=https://newdomain.com
 ```
 
@@ -278,13 +273,15 @@ sam deploy --guided --s3-bucket your-bucket-name
 sam deploy --parameter-overrides AllowedOrigin=https://yourdomain.com
 ```
 
-### Issue: "Agent not found"
-**Solution:** Verify your Bedrock Agent ID and Alias ID are correct:
+### Issue: "Model not found" or "Access Denied"
+**Solution:** 
+1. Verify model access is enabled in Bedrock Console
+2. Check the model ID is correct:
 ```bash
 sam deploy --parameter-overrides \
-  BedrockAgentId=CORRECT_ID \
-  BedrockAgentAliasId=CORRECT_ALIAS
+  BedrockModelId=anthropic.claude-3-sonnet-20240229-v1:0
 ```
+3. Ensure you're in a region where the model is available (us-east-1, us-west-2 recommended)
 
 ### Issue: Build fails
 **Solution:** Ensure dependencies are installed:
@@ -300,12 +297,10 @@ Deploy to different environments:
 
 ```bash
 # Development
-sam deploy --config-env dev \
-  --parameter-overrides AllowedOrigin=http://localhost:5173
+sam deploy --config-env dev
 
-# Production
-sam deploy --config-env prod \
-  --parameter-overrides AllowedOrigin=https://myresume.com
+# Production  
+sam deploy --config-env prod
 ```
 
 Add to `samconfig.toml`:
@@ -313,12 +308,12 @@ Add to `samconfig.toml`:
 [dev]
 [dev.deploy.parameters]
 stack_name = "resume-matcher-dev"
-parameter_overrides = "AllowedOrigin=\"http://localhost:5173\""
+parameter_overrides = "BedrockModelId=\"anthropic.claude-3-sonnet-20240229-v1:0\" AllowedOrigin=\"http://localhost:5173\""
 
 [prod]
 [prod.deploy.parameters]
 stack_name = "resume-matcher-prod"
-parameter_overrides = "AllowedOrigin=\"https://myresume.com\""
+parameter_overrides = "BedrockModelId=\"anthropic.claude-3-5-sonnet-20240620-v1:0\" AllowedOrigin=\"https://myresume.com\""
 ```
 
 ## Cost Estimation
@@ -341,10 +336,12 @@ This removes:
 - Function URL
 - CloudWatch log groups
 
-## Advantages Over Manual Scripts
+## Advantages Over Manual Deployment
 
-| Feature | Manual Scripts | SAM |
-|---------|---------------|-----|
+| Feature | Manual Deployment | SAM + Agent Core |
+|---------|------------------|------------------|
+| Agent Creation | Manual in Console | Not needed |
+| Agent Configuration | Manual in Console | In code |
 | IAM Role Creation | Manual | Automatic |
 | Function URL Setup | Manual | Automatic |
 | CORS Configuration | Manual | Declarative |
@@ -353,18 +350,35 @@ This removes:
 | Multiple Environments | Complex | Built-in |
 | Local Testing | Not possible | `sam local` |
 | Infrastructure as Code | No | Yes |
-| Version Control | Scripts only | Full stack |
+| Version Control | Code only | Full stack |
+| Deployment Time | 30-45 minutes | 5-10 minutes |
 
 ## Next Steps
 
 1. ✅ Install SAM CLI
-2. ✅ Create Bedrock Agent
+2. ✅ Enable model access in Bedrock Console (one-time)
 3. ✅ Run `sam build`
 4. ✅ Run `sam deploy --guided`
 5. ✅ Copy Function URL
 6. ✅ Update frontend `.env.local`
 7. ✅ Test the integration
 8. 🚀 Deploy frontend
+
+## What's Different with Agent Core?
+
+**Before (Bedrock Agents):**
+- Create agent manually in Console
+- Configure instructions in Console
+- Create and manage aliases
+- Copy Agent ID and Alias ID
+- Deploy Lambda with those IDs
+
+**Now (Agent Core):**
+- Enable model access (one-time)
+- Deploy Lambda (everything in code)
+- Done!
+
+All agent logic, instructions, and configuration are now in your Lambda code, making it fully automated and version-controlled.
 
 ## Resources
 

@@ -1,15 +1,17 @@
 # AWS Deployment Guide (Manual)
 
-This guide covers manual deployment of the Resume Matcher Lambda function using the AWS Console and CLI. For automated deployment using AWS SAM, see [SAM_DEPLOYMENT.md](SAM_DEPLOYMENT.md).
+This guide covers manual deployment of the Resume Matcher Lambda function using AWS Bedrock Agent Core via the AWS Console and CLI. For automated deployment using AWS SAM, see [SAM_DEPLOYMENT.md](SAM_DEPLOYMENT.md).
 
 ## Overview
 
-The Resume Matcher Lambda function requires:
-1. AWS Bedrock Agent setup
+The Resume Matcher Lambda function with Agent Core requires:
+1. Enable Bedrock model access (one-time)
 2. IAM role with appropriate permissions
 3. Lambda function deployment
 4. Lambda Function URL configuration
 5. Environment variable configuration
+
+**Note:** With Agent Core, you do NOT need to manually create a Bedrock Agent. Everything is in code!
 
 ## Prerequisites
 
@@ -18,66 +20,31 @@ The Resume Matcher Lambda function requires:
 - Node.js 18+ installed locally
 - Basic understanding of AWS Lambda and IAM
 
-## Step 1: Create Bedrock Agent
+## Step 1: Enable Bedrock Model Access
 
 ### 1.1 Navigate to Bedrock Console
 
 1. Open AWS Console
 2. Navigate to **Amazon Bedrock** service
-3. Select **Agents** from the left sidebar
-4. Click **Create Agent**
+3. Select **Model access** from the left sidebar
+4. Click **Manage model access** or **Enable specific models**
 
-### 1.2 Configure Agent
+### 1.2 Enable Claude Models
 
-**Basic Information:**
-- **Agent name**: `resume-matcher-agent`
-- **Description**: `AI agent for analyzing resume suitability against job descriptions`
-- **User input**: Enable
+1. Find **Anthropic** section
+2. Select the models you want to use:
+   - ✅ **Claude 3.5 Sonnet** (recommended)
+   - ✅ **Claude 3 Sonnet** (default)
+   - ✅ **Claude 3 Haiku** (faster, cheaper)
+3. Click **Request model access** or **Save changes**
+4. Wait for approval (usually instant)
 
-**Model Selection:**
-- Choose a model (recommended: **Claude 3 Sonnet** or **Claude 3.5 Sonnet**)
-- Region: Same as your Lambda function region
+### 1.3 Verify Access
 
-### 1.3 Add Agent Instructions
+1. Check that model status shows **Access granted**
+2. Note the model ID you want to use (e.g., `anthropic.claude-3-sonnet-20240229-v1:0`)
 
-In the **Instructions** section, add:
-
-```
-You are an expert technical recruiter analyzing a candidate's resume against a job description.
-
-When given a job description and resume, you must:
-1. Analyze the candidate's suitability for the role
-2. Provide a numerical score from 0-100 indicating overall fit
-3. Identify 3-5 key strengths where the candidate excels
-4. Identify 2-4 gaps where the candidate may not meet requirements
-5. Provide 3-5 recommendations for interview focus or role adjustments
-
-Always respond in valid JSON format with this structure:
-{
-  "score": <number between 0-100>,
-  "strengths": [<array of strings>],
-  "gaps": [<array of strings>],
-  "recommendations": [<array of strings>]
-}
-
-Be objective, thorough, and constructive in your analysis. Focus on technical skills, experience relevance, and qualification alignment.
-```
-
-### 1.4 Create and Publish Agent
-
-1. Click **Create Agent**
-2. Wait for agent creation to complete
-3. Click **Prepare** to prepare the agent
-4. Once prepared, click **Create Alias**
-   - **Alias name**: `production` (or `v1`)
-   - **Description**: `Production alias for resume matcher`
-5. Click **Create Alias**
-
-### 1.5 Note Agent Details
-
-Copy and save these values (you'll need them later):
-- **Agent ID**: Found in agent details (format: `ABCDEFGHIJ`)
-- **Agent Alias ID**: Found in alias details (format: `TSTALIASID`)
+**That's it!** No agent creation needed with Agent Core.
 
 ## Step 2: Create IAM Role for Lambda
 
@@ -94,20 +61,17 @@ Copy and save these values (you'll need them later):
     {
       "Effect": "Allow",
       "Action": [
-        "bedrock:InvokeAgent"
+        "bedrock:InvokeModel"
       ],
-      "Resource": [
-        "arn:aws:bedrock:*:*:agent/*",
-        "arn:aws:bedrock:*:*:agent-alias/*"
-      ]
+      "Resource": "*"
     }
   ]
 }
 ```
 
 4. Click **Next**
-5. **Policy name**: `BedrockAgentInvokePolicy`
-6. **Description**: `Allows Lambda to invoke Bedrock agents`
+5. **Policy name**: `BedrockModelInvokePolicy`
+6. **Description**: `Allows Lambda to invoke Bedrock foundation models`
 7. Click **Create Policy**
 
 ### 2.2 Create Lambda Execution Role
@@ -119,7 +83,7 @@ Copy and save these values (you'll need them later):
 
 **Attach Permissions:**
 - Search and select: `AWSLambdaBasicExecutionRole` (for CloudWatch logs)
-- Search and select: `BedrockAgentInvokePolicy` (created in step 2.1)
+- Search and select: `BedrockModelInvokePolicy` (created in step 2.1)
 
 5. Click **Next**
 6. **Role name**: `ResumeMatcherLambdaRole`
@@ -213,8 +177,7 @@ You should now have `resume-matcher-lambda.zip` in the lambda directory.
 1. Click **Configuration** tab → **Environment variables** → **Edit**
 2. Add the following variables:
    - `AWS_REGION`: Your AWS region (e.g., `us-east-1`)
-   - `BEDROCK_AGENT_ID`: Your Agent ID from Step 1.5
-   - `BEDROCK_AGENT_ALIAS_ID`: Your Agent Alias ID from Step 1.5
+   - `BEDROCK_MODEL_ID`: Your model ID (e.g., `anthropic.claude-3-sonnet-20240229-v1:0`)
    - `ALLOWED_ORIGIN`: Your frontend URL (e.g., `http://localhost:5173` for dev or `https://yourdomain.com` for prod)
 3. Click **Save**
 
@@ -234,8 +197,7 @@ aws lambda create-function \
   --memory-size 512 \
   --environment Variables="{
     AWS_REGION=us-east-1,
-    BEDROCK_AGENT_ID=YOUR_AGENT_ID,
-    BEDROCK_AGENT_ALIAS_ID=YOUR_ALIAS_ID,
+    BEDROCK_MODEL_ID=anthropic.claude-3-sonnet-20240229-v1:0,
     ALLOWED_ORIGIN=http://localhost:5173
   }"
 ```
@@ -403,8 +365,7 @@ aws lambda update-function-configuration \
   --function-name resume-matcher-lambda \
   --environment Variables="{
     AWS_REGION=us-east-1,
-    BEDROCK_AGENT_ID=NEW_AGENT_ID,
-    BEDROCK_AGENT_ALIAS_ID=NEW_ALIAS_ID,
+    BEDROCK_MODEL_ID=anthropic.claude-3-5-sonnet-20240620-v1:0,
     ALLOWED_ORIGIN=https://newdomain.com
   }"
 ```
@@ -461,13 +422,14 @@ Monitor in CloudWatch:
 
 ### Issue: "Access Denied" when invoking Bedrock
 
-**Cause:** IAM role missing Bedrock permissions
+**Cause:** IAM role missing Bedrock permissions or model access not enabled
 
 **Solution:**
-1. Go to IAM → Roles → ResumeMatcherLambdaRole
-2. Verify `BedrockAgentInvokePolicy` is attached
-3. Check policy has `bedrock:InvokeAgent` permission
-4. Verify resource ARNs include your agent
+1. Verify model access is enabled in Bedrock Console
+2. Go to IAM → Roles → ResumeMatcherLambdaRole
+3. Verify `BedrockModelInvokePolicy` is attached
+4. Check policy has `bedrock:InvokeModel` permission
+5. Ensure you're in a region where the model is available
 
 ### Issue: CORS errors in browser
 
@@ -480,16 +442,16 @@ Monitor in CloudWatch:
 4. Check Function URL CORS configuration matches
 5. Clear browser cache and retry
 
-### Issue: "Agent not found" error
+### Issue: "Model not found" error
 
-**Cause:** Invalid Agent ID or Alias ID
+**Cause:** Invalid Model ID or model not available in region
 
 **Solution:**
-1. Go to Bedrock Console → Agents
-2. Verify agent exists and is in "Prepared" state
-3. Check Agent ID and Alias ID are correct
-4. Ensure agent is in the same region as Lambda
-5. Update Lambda environment variables with correct IDs
+1. Go to Bedrock Console → Model access
+2. Verify model access is enabled
+3. Check Model ID is correct (e.g., `anthropic.claude-3-sonnet-20240229-v1:0`)
+4. Ensure model is available in your Lambda's region
+5. Update Lambda environment variables with correct Model ID
 
 ### Issue: Lambda timeout
 
@@ -528,16 +490,16 @@ Monitor in CloudWatch:
    └── package.json
    ```
 
-### Issue: Invalid JSON response from Bedrock
+### Issue: Invalid JSON response from AI
 
-**Cause:** Agent not following instructions or model limitations
+**Cause:** Model not following instructions or prompt issues
 
 **Solution:**
-1. Review agent instructions in Bedrock console
-2. Test agent directly in Bedrock console with sample input
-3. Ensure instructions explicitly request JSON format
-4. Try a different model (Claude 3.5 Sonnet recommended)
-5. Add error handling in Lambda to catch malformed responses
+1. Check CloudWatch logs for the actual response
+2. Verify system instructions in `bedrockService.js`
+3. Try a different model (Claude 3.5 Sonnet recommended)
+4. Increase temperature in inference config for more consistent JSON
+5. Review error handling in Lambda code
 
 ## Security Best Practices
 
@@ -640,28 +602,24 @@ aws iam delete-role --role-name ResumeMatcherLambdaRole
 ### Delete IAM Policy
 
 **Console:**
-1. IAM → Policies → BedrockAgentInvokePolicy
+1. IAM → Policies → BedrockModelInvokePolicy
 2. Actions → Delete
 3. Confirm deletion
 
 **CLI:**
 ```bash
 aws iam delete-policy \
-  --policy-arn arn:aws:iam::YOUR_ACCOUNT_ID:policy/BedrockAgentInvokePolicy
+  --policy-arn arn:aws:iam::YOUR_ACCOUNT_ID:policy/BedrockModelInvokePolicy
 ```
 
-### Delete Bedrock Agent
+**Note:** With Agent Core, there's no Bedrock Agent to delete!
 
-**Console:**
-1. Bedrock → Agents → resume-matcher-agent
-2. Delete agent
-3. Confirm deletion
+## Comparison: Manual vs SAM Deployment with Agent Core
 
-## Comparison: Manual vs SAM Deployment
-
-| Aspect | Manual Deployment | SAM Deployment |
-|--------|------------------|----------------|
-| **Setup Time** | 30-45 minutes | 10-15 minutes |
+| Aspect | Manual Deployment | SAM + Agent Core |
+|--------|------------------|------------------|
+| **Setup Time** | 20-30 minutes | 5-10 minutes |
+| **Agent Creation** | Not needed | Not needed |
 | **IAM Role** | Manual creation | Automatic |
 | **Function URL** | Manual setup | Automatic |
 | **CORS** | Manual configuration | Declarative |
@@ -677,13 +635,31 @@ aws iam delete-policy \
 
 ## Next Steps
 
-1. ✅ Complete all deployment steps above
-2. ✅ Test Lambda function with sample data
-3. ✅ Update frontend `.env.local` with Function URL
-4. ✅ Test end-to-end integration
-5. ✅ Monitor CloudWatch logs for errors
-6. ✅ Set up CloudWatch alarms (optional)
-7. 🚀 Deploy frontend to production
+1. ✅ Enable model access in Bedrock Console (one-time)
+2. ✅ Complete all deployment steps above
+3. ✅ Test Lambda function with sample data
+4. ✅ Update frontend `.env.local` with Function URL
+5. ✅ Test end-to-end integration
+6. ✅ Monitor CloudWatch logs for errors
+7. ✅ Set up CloudWatch alarms (optional)
+8. 🚀 Deploy frontend to production
+
+## What's Different with Agent Core?
+
+**Before (Bedrock Agents):**
+- Enable model access
+- Create agent in Console
+- Configure instructions
+- Create alias
+- Copy Agent ID and Alias ID
+- Deploy Lambda
+
+**Now (Agent Core):**
+- Enable model access (one-time)
+- Deploy Lambda (everything in code)
+- Done!
+
+All agent logic and instructions are now in your Lambda code (`bedrockService.js`), making deployment fully automated.
 
 ## Additional Resources
 

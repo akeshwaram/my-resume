@@ -21,7 +21,7 @@ The AI Resume Matcher feature allows recruiters and hiring managers to:
 
 1. User enters a job description
 2. System sends the job description and resume data to AWS Lambda
-3. Lambda invokes AWS Bedrock Agent for AI analysis
+3. Lambda uses AWS Bedrock Agent Core to invoke AI model for analysis
 4. Results are displayed with color-coded scoring and detailed feedback
 
 ## Setup
@@ -61,14 +61,11 @@ VITE_API_URL=https://your-function-url.lambda-url.us-east-1.on.aws/
 The Lambda function requires these environment variables (configured during deployment):
 
 ```env
-# AWS region where your Lambda and Bedrock Agent are deployed
+# AWS region where your Lambda and Bedrock models are deployed
 AWS_REGION=us-east-1
 
-# Bedrock Agent ID (from AWS Bedrock Console)
-BEDROCK_AGENT_ID=ABCDEFGHIJ
-
-# Bedrock Agent Alias ID (from AWS Bedrock Console)
-BEDROCK_AGENT_ALIAS_ID=TSTALIASID
+# Bedrock Model ID (foundation model to use)
+BEDROCK_MODEL_ID=anthropic.claude-3-sonnet-20240229-v1:0
 
 # CORS allowed origin (your frontend URL)
 ALLOWED_ORIGIN=http://localhost:5173
@@ -93,7 +90,9 @@ Update your resume content in `src/resumeData.json`:
 
 ## AI Resume Matcher Setup
 
-The AI Resume Matcher requires a serverless backend deployed to AWS Lambda. You can deploy using either:
+The AI Resume Matcher uses **AWS Bedrock Agent Core** for AI-powered analysis. This approach eliminates the need for manual agent creation - everything is in code!
+
+The backend requires a serverless Lambda function deployed to AWS. You can deploy using either:
 
 1. **AWS SAM (Recommended)** - Automated deployment with Infrastructure as Code
 2. **Manual AWS Deployment** - Step-by-step manual setup via AWS Console/CLI
@@ -106,12 +105,12 @@ The AI Resume Matcher requires a serverless backend deployed to AWS Lambda. You 
    - Mac: `brew install aws-sam-cli`
    - Linux: See [SAM installation guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html)
 2. **AWS CLI configured**: `aws configure`
-3. **Create Bedrock Agent** in AWS Console (see deployment guides for instructions)
+3. **Enable Bedrock model access** in AWS Console (one-time, see deployment guide)
 
 **For Manual Deployment:**
 1. **AWS CLI configured**: `aws configure`
 2. **Node.js 18+** installed
-3. **Create Bedrock Agent** in AWS Console (see deployment guides for instructions)
+3. **Enable Bedrock model access** in AWS Console (one-time, see deployment guide)
 
 ### Quick Deploy with SAM (Recommended)
 

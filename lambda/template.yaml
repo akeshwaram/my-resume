@@ -1,15 +1,12 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Resume Matcher Lambda Function with Bedrock Agent integration
+Description: Resume Matcher Lambda Function with Bedrock Agent Core integration
 
 Parameters:
-  BedrockAgentId:
+  BedrockModelId:
     Type: String
-    Description: Bedrock Agent ID for resume analysis
-    
-  BedrockAgentAliasId:
-    Type: String
-    Description: Bedrock Agent Alias ID
+    Description: Bedrock Model ID for resume analysis (e.g., anthropic.claude-3-sonnet-20240229-v1:0)
+    Default: anthropic.claude-3-sonnet-20240229-v1:0
     
   AllowedOrigin:
     Type: String
@@ -26,8 +23,7 @@ Globals:
     Environment:
       Variables:
         AWS_REGION: !Ref AWS::Region
-        BEDROCK_AGENT_ID: !Ref BedrockAgentId
-        BEDROCK_AGENT_ALIAS_ID: !Ref BedrockAgentAliasId
+        BEDROCK_MODEL_ID: !Ref BedrockModelId
         ALLOWED_ORIGIN: !Ref AllowedOrigin
 
 Resources:
@@ -42,7 +38,7 @@ Resources:
         - Statement:
           - Effect: Allow
             Action:
-              - bedrock:InvokeAgent
+              - bedrock:InvokeModel
             Resource: '*'
         - AWSLambdaBasicExecutionRole
       FunctionUrlConfig:
