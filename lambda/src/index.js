@@ -47,21 +47,16 @@ function validateResumeData(resumeData) {
 }
 
 /**
- * Creates a Lambda response object with CORS headers
+ * Creates a Lambda response object
  * @param {number} statusCode - HTTP status code
  * @param {Object} body - Response body object
  * @returns {Object} Lambda response object
  */
 function createResponse(statusCode, body) {
-  const allowedOrigin = process.env.ALLOWED_ORIGIN || '*';
-
   return {
     statusCode,
     headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': allowedOrigin,
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify(body)
   };

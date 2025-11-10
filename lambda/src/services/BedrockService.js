@@ -3,12 +3,12 @@ import { BedrockRuntimeClient, ConverseCommand } from '@aws-sdk/client-bedrock-r
 class BedrockService {
   constructor() {
     this.modelId = process.env.BEDROCK_MODEL_ID || 'anthropic.claude-3-sonnet-20240229-v1:0';
-    this.region = process.env.AWS_REGION || 'us-east-1';
     this.timeout = 30000; // 30 seconds
     
     // Initialize Bedrock Runtime client
+    // AWS_REGION is automatically provided by Lambda runtime
     this.client = new BedrockRuntimeClient({
-      region: this.region
+      region: process.env.AWS_REGION
     });
   }
 

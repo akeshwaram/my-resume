@@ -22,7 +22,6 @@ Globals:
       - x86_64
     Environment:
       Variables:
-        AWS_REGION: !Ref AWS::Region
         BEDROCK_MODEL_ID: !Ref BedrockModelId
         ALLOWED_ORIGIN: !Ref AllowedOrigin
 
@@ -39,6 +38,10 @@ Resources:
           - Effect: Allow
             Action:
               - bedrock:InvokeModel
+            Resource: '*'
+          - Effect: Allow
+            Action:
+              - aws-marketplace:ViewSubscriptions
             Resource: '*'
         - AWSLambdaBasicExecutionRole
       FunctionUrlConfig:
