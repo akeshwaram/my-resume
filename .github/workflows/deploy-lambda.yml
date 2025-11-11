@@ -1,0 +1,57 @@
+name: Deploy Lambda to AWS
+
+on:
+  push:
+    branches:
+      - bedrock-lambda
+    paths:
+      - 'lambda/**'
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup AWS SAM CLI
+        uses: aws-actions/setup-sam@v2
+        with:
+          use-installer: true
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      - name: Install Lambda dependencies
+        run: |
+          cd lambda
+          npm install --production
+
+      - name: SAM Build
+        run: |
+          cd lambda
+          sam build
+
+      - name: SAM Deploy
+        run: |
+          cd lambda
+          sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
+
+      - name: Get Function URL
+        run: |
+          aws cloudformation describe-stacks \
+            --stack-name resume-matcher-stack \
+            --region ap-south-1 \
+            --query 'Stacks[0].Outputs[?OutputKey==`FunctionUrl`].OutputValue' \
+            --output text
