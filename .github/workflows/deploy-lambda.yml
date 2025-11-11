@@ -36,11 +36,11 @@ jobs:
         with:
           use-installer: true
 
-      - name: Configure AWS credentials (assume role via OIDC)
+      - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-          aws-region: ap-south-1
+          aws-region: ${{ secrets.AWS_REGION }}
           role-session-name: GitHubActions-DeployLambda
 
       - name: Install Lambda dependencies
@@ -55,12 +55,17 @@ jobs:
         working-directory: lambda
         run: |
           sam deploy \
-            --no-fail-on-empty-changeset
+            --stack-name resume-matcher-stack \
+            --region ${{ secrets.AWS_REGION }} \
+            --capabilities CAPABILITY_IAM \
+            --no-fail-on-empty-changeset \
+            --resolve-s3 \
+            --s3-prefix resume-matcher
 
       - name: Get Function URL
         run: |
           aws cloudformation describe-stacks \
             --stack-name resume-matcher-stack \
-            --region ap-south-1 \
+            --region ${{ secrets.AWS_REGION }} \
             --query 'Stacks[0].Outputs[?OutputKey==`FunctionUrl`].OutputValue' \
             --output text
