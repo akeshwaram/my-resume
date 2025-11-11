@@ -3,7 +3,7 @@ name: Deploy Lambda to AWS
 on:
   push:
     branches:
-      - bedrock-lambda
+      - bedrock-agentcore
     paths:
       - 'lambda/**'
   workflow_dispatch:  # Allows manual trigger
