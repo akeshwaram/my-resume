@@ -54,7 +54,9 @@ jobs:
       - name: SAM Deploy
         run: |
           cd lambda
-          sam deploy --no-fail-on-empty-changeset
+          sam deploy \
+            --config-file samconfig.toml \
+            --no-fail-on-empty-changeset
 
       - name: Get Function URL
         run: |
