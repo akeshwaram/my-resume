@@ -6,7 +6,7 @@ on:
       - bedrock-agentcore
     paths:
       - 'lambda/**'
-  workflow_dispatch:  # Allows manual trigger
+  workflow_dispatch: # Allows manual trigger from GitHub UI
 
 permissions:
   id-token: write
@@ -15,11 +15,11 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     env:
       AWS_REGION: ${{ secrets.AWS_REGION }}
       AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -28,13 +28,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: lambda/package-lock.json
 
       - name: Setup AWS SAM CLI
         uses: aws-actions/setup-sam@v2
         with:
           use-installer: true
 
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials (assume role via OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
@@ -42,20 +44,17 @@ jobs:
           role-session-name: GitHubActions-DeployLambda
 
       - name: Install Lambda dependencies
-        run: |
-          cd lambda
-          npm install --production
+        working-directory: lambda
+        run: npm ci --omit=dev
 
       - name: SAM Build
-        run: |
-          cd lambda
-          sam build
+        working-directory: lambda
+        run: sam build
 
       - name: SAM Deploy
+        working-directory: lambda
         run: |
-          cd lambda
           sam deploy \
-            --config-file lambda/samconfig.toml \
             --no-fail-on-empty-changeset
 
       - name: Get Function URL
