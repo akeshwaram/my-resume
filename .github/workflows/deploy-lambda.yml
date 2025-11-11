@@ -15,11 +15,10 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     env:
       AWS_REGION: ${{ secrets.AWS_REGION }}
       AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
-
+      ARTIFACT_BUCKET: resume-matcher-artifacts
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -59,8 +58,7 @@ jobs:
             --region ${{ secrets.AWS_REGION }} \
             --capabilities CAPABILITY_IAM \
             --no-fail-on-empty-changeset \
-            --resolve-s3 \
-            --s3-prefix resume-matcher
+            --s3-bucket ${{ env.ARTIFACT_BUCKET }} \
 
       - name: Get Function URL
         run: |
