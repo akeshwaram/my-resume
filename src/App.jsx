@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Sidebar from "./components/Sidebar.jsx";
 import Section from "./components/Section.jsx";
 import ResumeMatcherSection from "./components/ResumeMatcherSection.jsx";
+import VisitorCounter from "./components/VisitorCounter.jsx";
 import "./App.css";
 
 export default function App({ resumeData }) {
@@ -122,6 +123,8 @@ export default function App({ resumeData }) {
             link: c.href,
           }))}
         />
+        
+        <VisitorCounter />
       </main>
 
       {showTop && (
