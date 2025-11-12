@@ -37,11 +37,7 @@ Resources:
         - Statement:
           - Effect: Allow
             Action:
-              - bedrock:InvokeModel
-            Resource: '*'
-          - Effect: Allow
-            Action:
-              - aws-marketplace:ViewSubscriptions
+              - bedrock-runtime:InvokeModel
             Resource: '*'
         - AWSLambdaBasicExecutionRole
       FunctionUrlConfig:
