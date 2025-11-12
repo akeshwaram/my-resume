@@ -44,9 +44,10 @@
 }
 
 .app-content {
-  padding: var(--space-6) var(--space-5);
+  padding: var(--space-8) var(--space-6);
   overflow: hidden;
-  max-width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
 }
 
 /* Ensure grid/flex children can shrink (prevents horizontal overflow) */
@@ -67,12 +68,19 @@ section {
   background: var(--color-bg-primary);
   border: 1px solid var(--color-border-light);
   border-radius: var(--radius-lg);
-  padding: var(--space-5);
+  padding: var(--space-4);
   margin-bottom: var(--space-5);
   box-shadow: var(--shadow-sm);
   transition: box-shadow var(--transition-normal);
   /* Add scroll margin to account for sticky header on mobile */
   scroll-margin-top: 120px;
+}
+
+@media (min-width: 1024px) {
+  section {
+    padding: var(--space-6) var(--space-8);
+    margin-bottom: var(--space-8);
+  }
 }
 
 /* Reduce scroll margin on desktop where sidebar is not sticky */
@@ -87,7 +95,7 @@ section:hover {
 }
 
 section h2 {
-  margin: 0 0 var(--space-4);
+  margin: 0 0 var(--space-5);
   font-size: var(--text-2xl);
   font-weight: var(--font-bold);
   line-height: var(--leading-snug);
@@ -225,19 +233,18 @@ section {
 @media (min-width: 1024px) {
   .app-shell {
     grid-template-columns: 280px 1fr;
-    gap: var(--space-6);
+    gap: var(--space-4);
   }
   
   .app-content {
-    padding: var(--space-6) var(--space-5);
-    /* Better content flow on desktop */
-    max-width: none;
+    padding: var(--space-10) var(--space-8);
+    max-width: 1040px;
+    margin: 0 auto;
   }
   
   section {
-    padding: var(--space-6);
-    margin-bottom: var(--space-6);
-    /* Enhanced desktop spacing */
+    padding: var(--space-8) var(--space-6);
+    margin-bottom: var(--space-8);
     border-radius: var(--radius-xl);
   }
   
@@ -252,18 +259,20 @@ section {
 @media (min-width: 1440px) {
   .app-shell {
     grid-template-columns: 320px 1fr;
-    max-width: 1600px;
+    max-width: 1800px;
     margin: 0 auto;
+    gap: var(--space-5);
   }
   
   .app-content {
-    padding: var(--space-8) var(--space-6);
-    /* Remove max-width constraint to allow full width */
+    padding: var(--space-12) var(--space-10);
+    max-width: 1040px;
+    margin: 0 auto;
   }
   
   section {
-    padding: var(--space-8);
-    margin-bottom: var(--space-8);
+    padding: var(--space-10) var(--space-8);
+    margin-bottom: var(--space-10);
   }
   
   /* Enhanced typography for large screens */
