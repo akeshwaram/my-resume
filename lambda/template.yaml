@@ -5,12 +5,12 @@ Description: Resume Matcher Lambda Function with Bedrock Runtime integration
 Parameters:
   BedrockModelId:
     Type: String
-    Description: Bedrock Model ID for resume analysis (e.g., anthropic.claude-3-sonnet-20240229-v1:0)
+    Description: Bedrock Model ID for resume analysis
     Default: anthropic.claude-3-sonnet-20240229-v1:0
     
   AllowedOrigin:
     Type: String
-    Description: CORS allowed origin (e.g., https://yourdomain.com or http://localhost:5173)
+    Description: CORS allowed origin
     Default: http://localhost:5173
 
 Globals:
