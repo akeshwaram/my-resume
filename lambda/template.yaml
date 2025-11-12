@@ -37,6 +37,7 @@ Resources:
         - Statement:
           - Effect: Allow
             Action:
+              - bedrock:InvokeModel
               - bedrock-runtime:InvokeModel
               - bedrock-runtime:InvokeModelWithResponseStream
             Resource: 
