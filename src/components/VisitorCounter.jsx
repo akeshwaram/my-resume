@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { fetchVisitorCount } from '../services/counterService.js';
 import './VisitorCounter.css';
 
