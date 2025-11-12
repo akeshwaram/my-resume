@@ -37,22 +37,34 @@ Provide your analysis in the required JSON format with score, strengths, gaps, a
   getSystemInstructions() {
     return `You are an expert technical recruiter analyzing a candidate's resume against a job description.
 
+SCORING GUIDELINES - Be strict and realistic:
+- 0-20: Poor fit - Missing most required qualifications or job description is invalid/unclear
+- 21-40: Weak fit - Missing several key requirements
+- 41-60: Moderate fit - Has some relevant experience but significant gaps
+- 61-75: Good fit - Meets most requirements with minor gaps
+- 76-85: Strong fit - Meets all key requirements with relevant experience
+- 86-100: Excellent fit - Exceeds requirements with exceptional qualifications
+
+CRITICAL RULES:
+1. If the job description is gibberish, unclear, or invalid, assign a score of 0-10
+2. Be critical and realistic - most candidates should score 40-70
+3. Only exceptional matches should score above 85
+4. Focus on actual job requirements vs candidate qualifications
+5. Consider years of experience, specific technologies, and role level
+
 Your task is to:
-1. Analyze the candidate's suitability for the role
-2. Provide a numerical score from 0-100 indicating overall fit
-3. Identify 3-5 key strengths where the candidate excels
-4. Identify 2-4 gaps where the candidate may not meet requirements
-5. Provide 3-5 recommendations for interview focus or role adjustments
+1. First validate the job description is legitimate and clear
+2. Analyze the candidate's suitability for the role
+3. Provide a numerical score from 0-100 indicating overall fit
+4. Identify 3-5 key strengths where the candidate excels
 
 IMPORTANT: You must respond in valid JSON format with this exact structure:
 {
   "score": <number between 0-100>,
-  "strengths": ["<string>", "<string>", ...],
-  "gaps": ["<string>", "<string>", ...],
-  "recommendations": ["<string>", "<string>", ...]
+  "strengths": ["<string>", "<string>", ...]
 }
 
-Be objective, thorough, and constructive in your analysis. Focus on technical skills, experience relevance, and qualification alignment.`;
+Be objective and focus on technical skills, experience relevance, and qualification alignment.`;
   }
 
   /**
@@ -64,7 +76,7 @@ Be objective, thorough, and constructive in your analysis. Focus on technical sk
     try {
       // Extract JSON from the response
       // The response might contain additional text, so we need to find the JSON object
-      const jsonMatch = responseText.match(/\{[\s\S]*?"score"[\s\S]*?"strengths"[\s\S]*?"gaps"[\s\S]*?"recommendations"[\s\S]*?\}/);
+      const jsonMatch = responseText.match(/\{[\s\S]*?"score"[\s\S]*?"strengths"[\s\S]*?\}/);
       
       if (!jsonMatch) {
         throw new Error('Unable to parse structured response from AI model');
@@ -74,9 +86,7 @@ Be objective, thorough, and constructive in your analysis. Focus on technical sk
 
       // Validate response structure
       if (typeof parsedData.score !== 'number' || 
-          !Array.isArray(parsedData.strengths) || 
-          !Array.isArray(parsedData.gaps) || 
-          !Array.isArray(parsedData.recommendations)) {
+          !Array.isArray(parsedData.strengths)) {
         throw new Error('Invalid response structure from AI model');
       }
 
@@ -104,11 +114,6 @@ Be objective, thorough, and constructive in your analysis. Focus on technical sk
       const prompt = this.buildPrompt(jobDescription, formattedResume);
       const systemInstructions = this.getSystemInstructions();
 
-      console.log('Bedrock request details:', {
-        modelId: this.modelId,
-        region: process.env.AWS_REGION
-      });
-
       // Create the Converse command
       const command = new ConverseCommand({
         modelId: this.modelId,
@@ -128,7 +133,7 @@ Be objective, thorough, and constructive in your analysis. Focus on technical sk
           }
         ],
         inferenceConfig: {
-          maxTokens: 2000,
+          maxTokens: 500,
           temperature: 0.7,
           topP: 0.9
         }
@@ -164,15 +169,6 @@ Be objective, thorough, and constructive in your analysis. Focus on technical sk
 
       return analysisResult;
     } catch (error) {
-      // Log full error details for debugging
-      console.error('Bedrock error details:', {
-        name: error.name,
-        message: error.message,
-        code: error.$metadata?.httpStatusCode,
-        requestId: error.$metadata?.requestId,
-        stack: error.stack
-      });
-
       // Handle specific error types with meaningful messages
       if (error.name === 'ResourceNotFoundException') {
         throw new Error('AI model not found. Please verify model configuration and ensure model access is enabled in Bedrock Console.');

@@ -104,9 +104,7 @@ export async function handler(event) {
       // Return successful response
       return createResponse(200, {
         score: analysisResult.score,
-        strengths: analysisResult.strengths,
-        gaps: analysisResult.gaps,
-        recommendations: analysisResult.recommendations
+        strengths: analysisResult.strengths
       });
 
     } catch (validationError) {
