@@ -86,7 +86,7 @@ export default function ResumeMatcherSection({ resumeData }) {
     <section id="resume-matcher" className="resume-matcher-section">
       <div className="section-title-wrapper">
         <span className="ai-icon">✨</span>
-        <h2 className="gradient-title">AI Role Compatibility Check</h2>
+        <h2 className="gradient-title">Role Compatibility Check</h2>
       </div>
       <p className="section-description">
         Curious how well my experience aligns with a specific role? Enter a job title below and let AI evaluate the match

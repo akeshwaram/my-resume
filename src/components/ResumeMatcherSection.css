@@ -38,9 +38,9 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  font-size: 1.75rem;
+  font-size: var(--text-2xl);
   margin: 0;
-  font-weight: 700;
+  font-weight: var(--font-bold);
   position: relative;
 }
 
@@ -247,7 +247,7 @@
   }
 
   .gradient-title {
-    font-size: 1.5rem;
+    font-size: var(--text-xl);
   }
 
   .ai-icon {
@@ -302,7 +302,7 @@
   }
 
   .gradient-title {
-    font-size: 1.35rem;
+    font-size: var(--text-lg);
   }
 
   .ai-icon {
