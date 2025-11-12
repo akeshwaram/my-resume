@@ -1,4 +1,4 @@
-import React from "react";
+
 import "./AnalysisResults.css";
 
 export default function AnalysisResults({ score, strengths, onNewAnalysis }) {
@@ -47,7 +47,7 @@ export default function AnalysisResults({ score, strengths, onNewAnalysis }) {
           onClick={onNewAnalysis}
           type="button"
         >
-          New Analysis
+          Check Another Fit
         </button>
       </div>
     </div>

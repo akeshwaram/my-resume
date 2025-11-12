@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import LoadingSpinner from "./LoadingSpinner.jsx";
 import AnalysisResults from "./AnalysisResults.jsx";
 import "./ResumeMatcherSection.css";
@@ -84,7 +84,10 @@ export default function ResumeMatcherSection({ resumeData }) {
 
   return (
     <section id="resume-matcher" className="resume-matcher-section">
-      <h2>AI Role Compatibility Check</h2>
+      <div className="section-title-wrapper">
+        <span className="ai-icon">✨</span>
+        <h2 className="gradient-title">AI Role Compatibility Check</h2>
+      </div>
       <p className="section-description">
         Curious how well my experience aligns with a specific role? Enter a job title below and let AI evaluate the match
       </p>
@@ -119,7 +122,7 @@ export default function ResumeMatcherSection({ resumeData }) {
             className="submit-button"
             disabled={!isValid || isAnalyzing}
           >
-            Analyze Match
+            Check Role Fit
           </button>
         </form>
       )}

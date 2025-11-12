@@ -1,4 +1,4 @@
-import React from "react";
+
 import "./Sidebar.css";
 import VisitorCounter from "./VisitorCounter";
 
@@ -9,7 +9,8 @@ export default function Sidebar({ name = "Resume", links = [] }) {
       <nav>
         {links.map((l) => (
           <a key={l.href} className="nav-item" href={l.href}>
-            {l.label}
+            {l.icon && <span className="nav-icon">{l.icon}</span>}
+            <span className="nav-label">{l.label}</span>
           </a>
         ))}
       </nav>

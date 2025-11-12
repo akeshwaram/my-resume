@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Sidebar from "./components/Sidebar.jsx";
 import Section from "./components/Section.jsx";
 import ResumeMatcherSection from "./components/ResumeMatcherSection.jsx";
@@ -38,7 +38,7 @@ export default function App({ resumeData }) {
         name={about?.name}
         links={[
           { href: "#about", label: "About" },
-          { href: "#resume-matcher", label: "AI Job Match" },
+          { href: "#resume-matcher", label: "Role Fit", icon: "✨" },
           { href: "#skills", label: "Skills" },
           { href: "#certs", label: "Certifications" },
           { href: "#experience", label: "Experience" },

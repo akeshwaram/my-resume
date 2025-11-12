@@ -71,6 +71,15 @@ section {
   margin-bottom: var(--space-5);
   box-shadow: var(--shadow-sm);
   transition: box-shadow var(--transition-normal);
+  /* Add scroll margin to account for sticky header on mobile */
+  scroll-margin-top: 120px;
+}
+
+/* Reduce scroll margin on desktop where sidebar is not sticky */
+@media (min-width: 768px) {
+  section {
+    scroll-margin-top: 20px;
+  }
 }
 
 section:hover {
@@ -148,6 +157,8 @@ section h2 {
   padding: var(--space-3) var(--space-3);
   /* Ensure content doesn't touch screen edges */
   min-height: calc(100vh - 120px);
+  /* Add bottom padding so last section is scrollable */
+  padding-bottom: var(--space-10);
 }
 
 section {
@@ -289,11 +300,25 @@ section {
 /* =========================
    Text wrapping & overflow safety
    ========================= */
-html,
-body {
+html {
   overflow-x: hidden; /* avoid horizontal scrollbars */
   overflow-wrap: anywhere; /* modern wrapping for long tokens */
   word-break: break-word; /* legacy fallback */
+  /* Add scroll padding to account for sticky header */
+  scroll-padding-top: 120px;
+}
+
+body {
+  overflow-x: hidden;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Adjust scroll padding for desktop where sidebar is not sticky */
+@media (min-width: 768px) {
+  html {
+    scroll-padding-top: 20px;
+  }
 }
 
 p,
