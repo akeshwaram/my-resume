@@ -104,6 +104,11 @@ Be objective, thorough, and constructive in your analysis. Focus on technical sk
       const prompt = this.buildPrompt(jobDescription, formattedResume);
       const systemInstructions = this.getSystemInstructions();
 
+      console.log('Bedrock request details:', {
+        modelId: this.modelId,
+        region: process.env.AWS_REGION
+      });
+
       // Create the Converse command
       const command = new ConverseCommand({
         modelId: this.modelId,
@@ -159,6 +164,15 @@ Be objective, thorough, and constructive in your analysis. Focus on technical sk
 
       return analysisResult;
     } catch (error) {
+      // Log full error details for debugging
+      console.error('Bedrock error details:', {
+        name: error.name,
+        message: error.message,
+        code: error.$metadata?.httpStatusCode,
+        requestId: error.$metadata?.requestId,
+        stack: error.stack
+      });
+
       // Handle specific error types with meaningful messages
       if (error.name === 'ResourceNotFoundException') {
         throw new Error('AI model not found. Please verify model configuration and ensure model access is enabled in Bedrock Console.');
