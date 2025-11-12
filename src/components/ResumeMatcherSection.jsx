@@ -84,9 +84,9 @@ export default function ResumeMatcherSection({ resumeData }) {
 
   return (
     <section id="resume-matcher" className="resume-matcher-section">
-      <h2>AI Job Match</h2>
+      <h2>AI Role Compatibility Check</h2>
       <p className="section-description">
-        Enter a job title below to see how well this candidate's profile matches the role.
+        Curious how well my experience aligns with a specific role? Enter a job title below and let AI evaluate the match
       </p>
 
       {!result && !isAnalyzing && (
@@ -101,7 +101,7 @@ export default function ResumeMatcherSection({ resumeData }) {
               className={`job-title-input ${validationError && jobTitle.length > 0 ? "input-error" : ""}`}
               value={jobTitle}
               onChange={(e) => setJobTitle(e.target.value)}
-              placeholder="e.g., Senior Software Engineer, Product Manager, Data Scientist..."
+              placeholder="e.g., Engineering Manager, Backend Architect, Solutions Architect..."
               disabled={isAnalyzing}
             />
             <div className="input-footer">
