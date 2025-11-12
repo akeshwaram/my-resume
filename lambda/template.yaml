@@ -7,11 +7,6 @@ Parameters:
     Type: String
     Description: Bedrock Model ID for resume analysis
     Default: anthropic.claude-3-sonnet-20240229-v1:0
-    
-  AllowedOrigin:
-    Type: String
-    Description: CORS allowed origin
-    Default: http://localhost:5173
 
 Globals:
   Function:
@@ -23,7 +18,6 @@ Globals:
     Environment:
       Variables:
         BEDROCK_MODEL_ID: !Ref BedrockModelId
-        ALLOWED_ORIGIN: !Ref AllowedOrigin
 
 Resources:
   ResumeMatcherFunction:
@@ -53,7 +47,9 @@ Resources:
         AuthType: NONE
         Cors:
           AllowOrigins:
-            - !Ref AllowedOrigin
+            - http://localhost:5173
+            - https://ashwinkeshwaram.com
+            - https://www.ashwinkeshwaram.com
           AllowMethods:
             - POST
           AllowHeaders:
