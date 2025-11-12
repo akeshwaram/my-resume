@@ -149,7 +149,7 @@ export default function ResumeMatcherSection({ resumeData }) {
                 className={`job-title-input ${validationError && jobTitle.length > 0 ? "input-error" : ""}`}
                 value={jobTitle}
                 onChange={(e) => setJobTitle(e.target.value)}
-                placeholder="e.g., Backend Engineer"
+                placeholder="e.g., Solutions Architect"
                 disabled={isAnalyzing}
               />
               {validationError && jobTitle.length > 0 && (

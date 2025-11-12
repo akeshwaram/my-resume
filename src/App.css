@@ -67,10 +67,10 @@ nav {
 section {
   background: var(--color-bg-primary);
   border: 1px solid var(--color-border-light);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);  /* Standardized 8px radius */
   padding: var(--space-4);
-  margin-bottom: var(--space-5);
-  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--space-8);  /* 32px spacing between cards */
+  box-shadow: var(--shadow-card);  /* Standardized 2-4px shadow */
   transition: box-shadow var(--transition-normal);
   /* Add scroll margin to account for sticky header on mobile */
   scroll-margin-top: 120px;
@@ -79,7 +79,7 @@ section {
 @media (min-width: 1024px) {
   section {
     padding: var(--space-6) var(--space-8);
-    margin-bottom: var(--space-8);
+    margin-bottom: var(--space-12);  /* 48px spacing on desktop */
   }
 }
 
