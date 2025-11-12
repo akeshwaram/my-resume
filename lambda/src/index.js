@@ -2,26 +2,26 @@ import BedrockService from './services/BedrockService.js';
 import ResumeFormatter from './utils/ResumeFormatter.js';
 
 /**
- * Validates the job description input
- * @param {string} jobDescription - The job description to validate
+ * Validates the job title input
+ * @param {string} jobTitle - The job title to validate
  * @throws {Error} If validation fails
  */
-function validateJobDescription(jobDescription) {
-  if (!jobDescription || typeof jobDescription !== 'string') {
-    throw new Error('Job description is required and must be a string');
+function validateJobTitle(jobTitle) {
+  if (!jobTitle || typeof jobTitle !== 'string') {
+    throw new Error('Job title is required and must be a string');
   }
 
-  const trimmedDescription = jobDescription.trim();
+  const trimmedTitle = jobTitle.trim();
   
-  if (trimmedDescription.length < 50) {
-    throw new Error('Job description must be at least 50 characters long');
+  if (trimmedTitle.length < 2) {
+    throw new Error('Job title must be at least 2 characters long');
   }
 
-  if (trimmedDescription.length > 5000) {
-    throw new Error('Job description must not exceed 5000 characters');
+  if (trimmedTitle.length > 100) {
+    throw new Error('Job title must not exceed 100 characters');
   }
 
-  return trimmedDescription;
+  return trimmedTitle;
 }
 
 /**
@@ -84,11 +84,11 @@ export async function handler(event) {
       });
     }
 
-    const { jobDescription, resumeData } = requestBody;
+    const { jobTitle, resumeData } = requestBody;
 
     // Validate inputs
     try {
-      const validatedJobDescription = validateJobDescription(jobDescription);
+      const validatedJobTitle = validateJobTitle(jobTitle);
       validateResumeData(resumeData);
 
       // Format resume data to readable text
@@ -97,7 +97,7 @@ export async function handler(event) {
       // Initialize Bedrock service and analyze job match
       const bedrockService = new BedrockService();
       const analysisResult = await bedrockService.analyzeJobMatch(
-        validatedJobDescription,
+        validatedJobTitle,
         formattedResume
       );
 

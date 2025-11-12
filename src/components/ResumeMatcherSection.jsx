@@ -4,28 +4,28 @@ import AnalysisResults from "./AnalysisResults.jsx";
 import "./ResumeMatcherSection.css";
 
 export default function ResumeMatcherSection({ resumeData }) {
-  const [jobDescription, setJobDescription] = useState("");
+  const [jobTitle, setJobTitle] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
 
-  const MIN_CHARS = 50;
-  const MAX_CHARS = 5000;
+  const MIN_CHARS = 2;
+  const MAX_CHARS = 100;
 
   // Validation helper
   const getValidationError = () => {
-    if (jobDescription.length === 0) return null;
-    if (jobDescription.length < MIN_CHARS) {
-      return `Job description must be at least ${MIN_CHARS} characters (currently ${jobDescription.length})`;
+    if (jobTitle.length === 0) return null;
+    if (jobTitle.length < MIN_CHARS) {
+      return `Job title must be at least ${MIN_CHARS} characters (currently ${jobTitle.length})`;
     }
-    if (jobDescription.length > MAX_CHARS) {
-      return `Job description must not exceed ${MAX_CHARS} characters (currently ${jobDescription.length})`;
+    if (jobTitle.length > MAX_CHARS) {
+      return `Job title must not exceed ${MAX_CHARS} characters (currently ${jobTitle.length})`;
     }
     return null;
   };
 
   const validationError = getValidationError();
-  const isValid = jobDescription.length >= MIN_CHARS && jobDescription.length <= MAX_CHARS;
+  const isValid = jobTitle.length >= MIN_CHARS && jobTitle.length <= MAX_CHARS;
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -50,7 +50,7 @@ export default function ResumeMatcherSection({ resumeData }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          jobDescription,
+          jobTitle,
           resumeData,
         }),
       });
@@ -71,7 +71,7 @@ export default function ResumeMatcherSection({ resumeData }) {
 
   // Handle new analysis
   const handleNewAnalysis = () => {
-    setJobDescription("");
+    setJobTitle("");
     setResult(null);
     setError(null);
   };
@@ -86,29 +86,29 @@ export default function ResumeMatcherSection({ resumeData }) {
     <section id="resume-matcher" className="resume-matcher-section">
       <h2>AI Job Match</h2>
       <p className="section-description">
-        Enter a job description below to see how well this candidate's profile matches the role.
+        Enter a job title below to see how well this candidate's profile matches the role.
       </p>
 
       {!result && !isAnalyzing && (
         <form onSubmit={handleSubmit} className="job-matcher-form">
           <div className="form-group">
-            <label htmlFor="job-description" className="form-label">
-              Job Description
+            <label htmlFor="job-title" className="form-label">
+              Job Title
             </label>
-            <textarea
-              id="job-description"
-              className={`job-description-input ${validationError && jobDescription.length > 0 ? "input-error" : ""}`}
-              value={jobDescription}
-              onChange={(e) => setJobDescription(e.target.value)}
-              placeholder="Paste the job description here (minimum 50 characters)..."
-              rows={10}
+            <input
+              type="text"
+              id="job-title"
+              className={`job-title-input ${validationError && jobTitle.length > 0 ? "input-error" : ""}`}
+              value={jobTitle}
+              onChange={(e) => setJobTitle(e.target.value)}
+              placeholder="e.g., Senior Software Engineer, Product Manager, Data Scientist..."
               disabled={isAnalyzing}
             />
             <div className="input-footer">
               <div className="character-count">
-                {jobDescription.length}/{MAX_CHARS}
+                {jobTitle.length}/{MAX_CHARS}
               </div>
-              {validationError && jobDescription.length > 0 && (
+              {validationError && jobTitle.length > 0 && (
                 <div className="validation-error">{validationError}</div>
               )}
             </div>
@@ -148,8 +148,6 @@ export default function ResumeMatcherSection({ resumeData }) {
         <AnalysisResults
           score={result.score}
           strengths={result.strengths}
-          gaps={result.gaps}
-          recommendations={result.recommendations}
           onNewAnalysis={handleNewAnalysis}
         />
       )}

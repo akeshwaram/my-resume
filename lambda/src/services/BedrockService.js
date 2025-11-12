@@ -14,20 +14,27 @@ class BedrockService {
 
   /**
    * Build structured prompt for resume analysis
-   * @param {string} jobDescription - The job description to analyze against
+   * @param {string} jobTitle - The job title to analyze against
    * @param {string} formattedResume - The formatted resume text
    * @returns {string} Structured prompt for AI analysis
    */
-  buildPrompt(jobDescription, formattedResume) {
-    return `Please analyze the following candidate's resume against the job description and provide your assessment in JSON format.
+  buildPrompt(jobTitle, formattedResume) {
+    return `Analyze if this candidate is qualified for the job title. Be HIGHLY CRITICAL and realistic.
 
-JOB DESCRIPTION:
-${jobDescription}
+JOB TITLE:
+${jobTitle}
 
 CANDIDATE RESUME:
 ${formattedResume}
 
-Provide your analysis in the required JSON format with score, strengths, gaps, and recommendations.`;
+ANALYSIS REQUIREMENTS:
+1. First check if the job title is valid. If it's gibberish or random text, score must be 0-10.
+2. Check if the candidate's experience and skills match this job title. If completely unrelated field, score must be below 30.
+3. Consider if the candidate has the typical skills and experience expected for this role.
+4. Consider seniority level implied by the title (e.g., "Senior" vs "Junior" vs no prefix).
+5. Be skeptical - default to lower scores unless there's clear evidence of strong fit.
+
+Provide your analysis in JSON format.`;
   }
 
   /**
@@ -35,36 +42,33 @@ Provide your analysis in the required JSON format with score, strengths, gaps, a
    * @returns {string} System instructions
    */
   getSystemInstructions() {
-    return `You are an expert technical recruiter analyzing a candidate's resume against a job description.
+    return `You are a HIGHLY CRITICAL technical recruiter. Your reputation depends on accurate, realistic assessments. You tend to be skeptical and only give high scores when truly warranted.
 
-SCORING GUIDELINES - Be strict and realistic:
-- 0-20: Poor fit - Missing most required qualifications or job description is invalid/unclear
-- 21-40: Weak fit - Missing several key requirements
-- 41-60: Moderate fit - Has some relevant experience but significant gaps
-- 61-75: Good fit - Meets most requirements with minor gaps
-- 76-85: Strong fit - Meets all key requirements with relevant experience
-- 86-100: Excellent fit - Exceeds requirements with exceptional qualifications
+STRICT SCORING RULES:
+- 0-10: Invalid/gibberish job title OR completely wrong field (e.g., chef resume for software engineer title)
+- 11-30: Wrong industry/field or missing ALL typical skills for this role
+- 31-50: Some relevant experience but missing most skills expected for this title
+- 51-65: Decent match with several gaps in typical requirements for this role
+- 66-75: Good match, has most skills and experience expected for this title
+- 76-85: Strong match, clearly qualified with solid relevant experience
+- 86-100: RARE - Exceptional match, significantly exceeds typical qualifications for this title
 
-CRITICAL RULES:
-1. If the job description is gibberish, unclear, or invalid, assign a score of 0-10
-2. Be critical and realistic - most candidates should score 40-70
-3. Only exceptional matches should score above 85
-4. Focus on actual job requirements vs candidate qualifications
-5. Consider years of experience, specific technologies, and role level
+DEFAULT BEHAVIOR: Start at 50 and adjust down for each mismatch. Only adjust up if there's exceptional fit.
 
-Your task is to:
-1. First validate the job description is legitimate and clear
-2. Analyze the candidate's suitability for the role
-3. Provide a numerical score from 0-100 indicating overall fit
-4. Identify 3-5 key strengths where the candidate excels
+MANDATORY CHECKS (each failure reduces score by 15-20 points):
+1. Is job title valid and clear? (If no → score 0-10)
+2. Does candidate's field/industry match this job title? (If no → score below 30)
+3. Does candidate have typical experience level for this title? (If no → reduce by 20)
+4. Does candidate have typical skills expected for this role? (If no → reduce by 15 per major gap)
+5. Does seniority match title (Senior/Lead/Junior)? (If no → reduce by 15)
 
-IMPORTANT: You must respond in valid JSON format with this exact structure:
+OUTPUT FORMAT (JSON only, no explanation):
 {
-  "score": <number between 0-100>,
-  "strengths": ["<string>", "<string>", ...]
+  "score": <number 0-100>,
+  "strengths": ["<specific strength>", "<specific strength>", "<specific strength>"]
 }
 
-Be objective and focus on technical skills, experience relevance, and qualification alignment.`;
+If there are no real strengths, list why the score is low instead.`;
   }
 
   /**
@@ -104,14 +108,14 @@ Be objective and focus on technical skills, experience relevance, and qualificat
 
   /**
    * Analyze job match using Bedrock Runtime
-   * @param {string} jobDescription - The job description to analyze
+   * @param {string} jobTitle - The job title to analyze
    * @param {string} formattedResume - The formatted resume text
-   * @returns {Promise<Object>} Analysis result with score, strengths, gaps, and recommendations
+   * @returns {Promise<Object>} Analysis result with score and strengths
    */
-  async analyzeJobMatch(jobDescription, formattedResume) {
+  async analyzeJobMatch(jobTitle, formattedResume) {
     try {
       // Build the analysis prompt
-      const prompt = this.buildPrompt(jobDescription, formattedResume);
+      const prompt = this.buildPrompt(jobTitle, formattedResume);
       const systemInstructions = this.getSystemInstructions();
 
       // Create the Converse command
@@ -134,7 +138,7 @@ Be objective and focus on technical skills, experience relevance, and qualificat
         ],
         inferenceConfig: {
           maxTokens: 500,
-          temperature: 0.7,
+          temperature: 0.3,
           topP: 0.9
         }
       });
