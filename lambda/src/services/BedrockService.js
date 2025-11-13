@@ -2,7 +2,7 @@ import { BedrockRuntimeClient, ConverseCommand } from '@aws-sdk/client-bedrock-r
 
 class BedrockService {
   constructor() {
-    this.modelId = process.env.BEDROCK_MODEL_ID || 'us.amazon.TEST-pro-v1:0';
+    this.modelId = process.env.BEDROCK_MODEL_ID || 'us.amazon.nova-pro-v1:0';
     this.timeout = 30000; // 30 seconds
     
     // Initialize Bedrock Runtime client
