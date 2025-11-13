@@ -114,6 +114,9 @@ If there are no real strengths, list why the score is low instead.`;
    */
   async analyzeJobMatch(jobTitle, formattedResume) {
     try {
+      // Log which model is being used
+      console.log(`Using Bedrock model: ${this.modelId}`);
+      
       // Build the analysis prompt
       const prompt = this.buildPrompt(jobTitle, formattedResume);
       const systemInstructions = this.getSystemInstructions();
@@ -170,6 +173,8 @@ If there are no real strengths, list why the score is low instead.`;
 
       // Parse the response
       const analysisResult = this.parseResponse(responseText);
+      
+      console.log(`Analysis completed successfully for job title: "${jobTitle}" with score: ${analysisResult.score}`);
 
       return analysisResult;
     } catch (error) {
