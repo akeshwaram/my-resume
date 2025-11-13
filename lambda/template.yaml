@@ -6,7 +6,7 @@ Parameters:
   BedrockModelId:
     Type: String
     Description: Bedrock Model ID for resume analysis
-    Default: anthropic.claude-3-sonnet-20240229-v1:0
+    Default: us.amazon.nova-pro-v1:0
 
 Globals:
   Function:
@@ -35,7 +35,7 @@ Resources:
               - bedrock-runtime:InvokeModel
               - bedrock-runtime:InvokeModelWithResponseStream
             Resource: 
-              - !Sub 'arn:aws:bedrock:${AWS::Region}::foundation-model/anthropic.claude-3-sonnet-20240229-v1:0'
+              - !Sub 'arn:aws:bedrock:${AWS::Region}::foundation-model/us.amazon.nova-pro-v1:0'
               - !Sub 'arn:aws:bedrock:${AWS::Region}::foundation-model/*'
           - Effect: Allow
             Action:
