@@ -12,7 +12,7 @@ export default function ResumeMatcherSection({ resumeData }) {
   const [cachedResults, setCachedResults] = useState({});
 
   const MIN_CHARS = 2;
-  const MAX_CHARS = 100;
+  const MAX_CHARS = 50;
   
   const presetRoles = [
     "Technical Architect",
@@ -150,6 +150,7 @@ export default function ResumeMatcherSection({ resumeData }) {
                 value={jobTitle}
                 onChange={(e) => setJobTitle(e.target.value)}
                 placeholder="e.g., Solutions Architect"
+                maxLength={50}
                 disabled={isAnalyzing}
               />
               {validationError && jobTitle.length > 0 && (

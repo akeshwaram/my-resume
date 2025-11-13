@@ -17,8 +17,8 @@ function validateJobTitle(jobTitle) {
     throw new Error('Job title must be at least 2 characters long');
   }
 
-  if (trimmedTitle.length > 100) {
-    throw new Error('Job title must not exceed 100 characters');
+  if (trimmedTitle.length > 50) {
+    throw new Error('Job title must not exceed 50 characters');
   }
 
   return trimmedTitle;
