@@ -1,25 +1,25 @@
 :root {
-  /* Primary Colors - Deep, sophisticated tones */
-  --color-primary: #0f172a;      /* Rich navy for headers */
-  --color-secondary: #1e293b;    /* Slate for secondary text */
-  --color-accent: #3b82f6;       /* Vibrant blue for links/highlights - 4.5:1 contrast ratio on white */
-  --color-accent-hover: #2563eb; /* Darker blue for interactions - 5.74:1 contrast ratio on white */
+  /* Minimalist Color Palette - Tech Modern */
+  --color-primary: #0a0a0a;      /* Pure black for maximum contrast */
+  --color-secondary: #171717;    /* Near-black for depth */
+  --color-accent: #6366f1;       /* Modern indigo accent */
+  --color-accent-hover: #4f46e5; /* Deeper indigo for interactions */
   
-  /* Background Colors - Clean, layered approach */
-  --color-bg-primary: #ffffff;   /* Pure white main background */
-  --color-bg-secondary: #f8fafc; /* Subtle gray for contrast */
-  --color-bg-tertiary: #f1f5f9;  /* Lighter gray for cards */
+  /* Background Colors - Ultra clean */
+  --color-bg-primary: #fafafa;   /* Off-white, easier on eyes */
+  --color-bg-secondary: #ffffff; /* Pure white for cards */
+  --color-bg-tertiary: #f5f5f5;  /* Subtle gray for depth */
   
-  /* Text Colors - High contrast hierarchy (WCAG AA compliant) */
-  --color-text-primary: #0f172a;   /* Main text - 19.07:1 contrast ratio on white */
-  --color-text-secondary: #475569; /* Secondary text - 7.23:1 contrast ratio on white */
-  --color-text-muted: #64748b;     /* Muted text - 5.05:1 contrast ratio on white */
-  --color-text-inverse: #ffffff;   /* White text for dark backgrounds */
+  /* Text Colors - Minimalist hierarchy */
+  --color-text-primary: #0a0a0a;   /* Pure black for readability */
+  --color-text-secondary: #525252; /* Neutral gray */
+  --color-text-muted: #a3a3a3;     /* Light gray for meta */
+  --color-text-inverse: #ffffff;   /* White text */
   
-  /* Border & Divider Colors */
-  --color-border-light: #e2e8f0;
-  --color-border-medium: #cbd5e1;
-  --color-border-strong: #94a3b8;
+  /* Border & Divider Colors - Subtle */
+  --color-border-light: #f5f5f5;
+  --color-border-medium: #e5e5e5;
+  --color-border-strong: #d4d4d4;
   
   /* Status & Accent Colors - Standardized */
   --color-success: #10b981;
@@ -32,25 +32,25 @@
   --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
   
-  /* Font Sizes - Consistent scale across breakpoints */
-  --text-caption: 0.8125rem;  /* 13px - captions */
+  /* Font Sizes - Refined scale */
+  --text-caption: 0.75rem;    /* 12px - captions */
   --text-sm: 0.875rem;        /* 14px - small text */
-  --text-base: 1rem;          /* 16px - body text (mobile) */
-  --text-body: 1.125rem;      /* 18px - body text (desktop) */
-  --text-h3: 1.125rem;        /* 18px - H3 (mobile) */
-  --text-h3-lg: 1.25rem;      /* 20px - H3 (desktop) */
-  --text-h2: 1.375rem;        /* 22px - H2 (mobile) */
+  --text-base: 0.9375rem;     /* 15px - body text */
+  --text-body: 1rem;          /* 16px - body text (desktop) */
+  --text-h3: 1rem;            /* 16px - H3 (mobile) */
+  --text-h3-lg: 1.125rem;     /* 18px - H3 (desktop) */
+  --text-h2: 1.25rem;         /* 20px - H2 (mobile) */
   --text-h2-lg: 1.5rem;       /* 24px - H2 (desktop) */
-  --text-h1: 1.75rem;         /* 28px - H1 (mobile) */
-  --text-h1-lg: 2rem;         /* 32px - H1 (desktop) */
+  --text-h1: 1.875rem;        /* 30px - H1 (mobile) */
+  --text-h1-lg: 2.25rem;      /* 36px - H1 (desktop) */
   
-  /* Font Weights */
+  /* Font Weights - Minimalist */
   --font-light: 300;
   --font-normal: 400;
   --font-medium: 500;
   --font-semibold: 600;
-  --font-bold: 700;
-  --font-extrabold: 800;
+  --font-bold: 600;           /* Reduced from 700 for softer look */
+  --font-extrabold: 700;      /* Reduced from 800 */
   
   /* Line Heights - Consistent 1.4-1.6 range */
   --leading-tight: 1.4;
@@ -70,20 +70,20 @@
   --space-16: 4rem;     /* 64px */
   --space-20: 5rem;     /* 80px */
   
-  /* Border Radius - Standardized */
-  --radius-sm: 0.25rem;   /* 4px */
-  --radius-md: 0.5rem;    /* 8px - Standard card radius */
+  /* Border Radius - Minimal */
+  --radius-sm: 0.375rem;  /* 6px */
+  --radius-md: 0.5rem;    /* 8px */
   --radius-lg: 0.75rem;   /* 12px */
   --radius-xl: 1rem;      /* 16px */
-  --radius-2xl: 1.5rem;   /* 24px */
+  --radius-2xl: 1.25rem;  /* 20px */
   --radius-full: 9999px;  /* Fully rounded */
   
-  /* Shadows - Standardized subtle shadows */
-  --shadow-card: 0 2px 4px 0 rgba(0, 0, 0, 0.06);
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  /* Shadows - Ultra subtle */
+  --shadow-card: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 2px 8px 0 rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 4px 16px 0 rgba(0, 0, 0, 0.06);
+  --shadow-xl: 0 8px 24px 0 rgba(0, 0, 0, 0.08);
   
   /* Transitions - Smooth animations */
   --transition-fast: 150ms ease-in-out;
@@ -128,14 +128,15 @@ html,
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Roboto', sans-serif;
   font-size: var(--text-base);
   font-weight: var(--font-normal);
   color: var(--color-text-primary);
-  background: var(--color-bg-secondary);
-  line-height: 1.5;
+  background: var(--color-bg-primary);
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.011em;
 }
 a {
   color: var(--color-accent);
@@ -166,30 +167,31 @@ img {
 /* Typography Hierarchy - Consistent scale */
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
-  font-weight: var(--font-bold);
-  line-height: var(--leading-tight);
+  font-weight: var(--font-semibold);
+  line-height: 1.2;
   color: var(--color-text-primary);
-  margin-bottom: var(--space-5);
+  margin-bottom: var(--space-4);
+  letter-spacing: -0.02em;
 }
 
 h1 {
   font-size: var(--text-h1);
-  font-weight: var(--font-extrabold);
-  line-height: var(--leading-tight);
+  font-weight: var(--font-bold);
+  line-height: 1.1;
   color: var(--color-primary);
 }
 
 h2 {
   font-size: var(--text-h2);
-  font-weight: var(--font-bold);
-  line-height: var(--leading-tight);
-  color: var(--color-accent);
+  font-weight: var(--font-semibold);
+  line-height: 1.2;
+  color: var(--color-primary);
 }
 
 h3 {
   font-size: var(--text-h3);
-  font-weight: var(--font-semibold);
-  line-height: var(--leading-tight);
+  font-weight: var(--font-medium);
+  line-height: 1.3;
   color: var(--color-text-primary);
 }
 

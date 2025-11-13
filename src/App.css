@@ -37,16 +37,16 @@
    ========================= */
 .app-shell {
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 260px 1fr;
   min-height: 100vh;
-  background: var(--color-bg-secondary);
+  background: var(--color-bg-primary);
   gap: 0;
 }
 
 .app-content {
-  padding: var(--space-8) var(--space-6);
+  padding: var(--space-12) var(--space-8);
   overflow: hidden;
-  max-width: 1040px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
@@ -65,25 +65,23 @@ nav {
    Sections
    ========================= */
 section {
-  background: var(--color-bg-primary);
-  border: 1px solid var(--color-border-light);
-  border-radius: var(--radius-md);  /* Standardized 8px radius */
-  padding: var(--space-4);
-  margin-bottom: var(--space-8);  /* 32px spacing between cards */
-  box-shadow: var(--shadow-card);  /* Standardized 2-4px shadow */
-  transition: box-shadow var(--transition-normal);
-  /* Add scroll margin to account for sticky header on mobile */
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  margin-bottom: var(--space-12);
+  box-shadow: none;
+  transition: all var(--transition-smooth);
   scroll-margin-top: 120px;
 }
 
 @media (min-width: 1024px) {
   section {
-    padding: var(--space-6) var(--space-8);
-    margin-bottom: var(--space-12);  /* 48px spacing on desktop */
+    padding: var(--space-10);
+    margin-bottom: var(--space-16);
   }
 }
 
-/* Reduce scroll margin on desktop where sidebar is not sticky */
 @media (min-width: 768px) {
   section {
     scroll-margin-top: 20px;
@@ -91,15 +89,17 @@ section {
 }
 
 section:hover {
-  box-shadow: var(--shadow-md);
+  border-color: var(--color-border-strong);
+  transform: translateY(-2px);
 }
 
 section h2 {
-  margin: 0 0 var(--space-5);
-  font-size: var(--text-2xl);
-  font-weight: var(--font-bold);
-  line-height: var(--leading-snug);
-  color: var(--color-accent);
+  margin: 0 0 var(--space-8);
+  font-size: var(--text-h2-lg);
+  font-weight: var(--font-semibold);
+  line-height: 1.2;
+  color: var(--color-primary);
+  letter-spacing: -0.02em;
 }
 
 .meta {
@@ -125,22 +125,22 @@ section h2 {
 
 .tag {
   background: var(--color-bg-tertiary);
-  color: var(--color-accent);
-  border: 1px solid var(--color-border-light);
-  border-radius: var(--radius-full);
-  padding: var(--space-2) var(--space-3);
+  color: var(--color-text-secondary);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-4);
   font-size: var(--text-sm);
-  font-weight: var(--font-medium);
+  font-weight: var(--font-normal);
   max-width: 100%;
   white-space: normal;
   overflow-wrap: anywhere;
-  transition: all var(--transition-fast);
+  transition: all var(--transition-smooth);
 }
 
 .tag:hover {
-  background: var(--color-accent);
+  background: var(--color-primary);
   color: var(--color-text-inverse);
-  border-color: var(--color-accent);
+  transform: translateY(-1px);
 }
 
 
@@ -391,7 +391,7 @@ html {
 }
 
 /* Mobile-specific typography optimizations */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   html {
     font-size: 16px; /* Ensure minimum readable size on mobile */
   }
@@ -525,7 +525,7 @@ a:hover {
 }
 
 /* Enhanced touch feedback for mobile */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .go-top:active {
     transform: scale(0.95);
     transition: transform 0.1s ease;
