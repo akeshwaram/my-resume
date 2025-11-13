@@ -6,7 +6,7 @@ Parameters:
   BedrockModelId:
     Type: String
     Description: Bedrock Model ID for resume analysis
-    Default: us.amazon.nova-pro-v1:0
+    Default: us.amazon.TEST-pro-v1:0
 
 Globals:
   Function:
