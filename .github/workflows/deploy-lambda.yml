@@ -59,6 +59,7 @@ jobs:
             --capabilities CAPABILITY_IAM \
             --no-fail-on-empty-changeset \
             --s3-bucket ${{ env.ARTIFACT_BUCKET }} \
+            --parameter-overrides BedrockModelId=us.amazon.nova-pro-v1:0 \
 
       - name: Get Function URL
         run: |
