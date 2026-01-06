@@ -60,17 +60,31 @@ export default function Section({ id, title, children, list = [], variant }) {
             // Check if there's any text content besides the link
             const hasTextContent = it.title || it.sub || it.meta;
             
+            // Check if the link is to the current site
+            const isCurrentSite = it.link && (
+              it.link.includes('ashwinkeshwaram.com') || 
+              it.link.includes(window.location.hostname)
+            );
+            
             return (
               <li key={i} className="compact-item">
                 <div className={`compact-content ${!hasTextContent ? 'compact-content-link-only' : ''}`}>
-                  {it.title && <span className="compact-title">{it.title}</span>}
+                  {it.title && (
+                    <div className="compact-title-row">
+                      <span className="compact-title">{it.title}</span>
+                      {it.link && (
+                        isCurrentSite ? (
+                          <span className="compact-live-indicator">ashwinkeshwaram.com</span>
+                        ) : (
+                          <a href={it.link} target="_blank" rel="noreferrer" className="compact-link">
+                            {it.linkText || "View"}
+                          </a>
+                        )
+                      )}
+                    </div>
+                  )}
                   {it.sub && <span className="compact-sub">{it.sub}</span>}
                   {it.meta && <span className="compact-meta">{it.meta}</span>}
-                  {it.link && (
-                    <a href={it.link} target="_blank" rel="noreferrer" className="compact-link">
-                      {it.linkText || "View"}
-                    </a>
-                  )}
                 </div>
                 {it.description && <div className="compact-description">{it.description}</div>}
                 {it.tags && (

@@ -186,7 +186,7 @@ export default function ResumeMatcherSection({ resumeData }) {
         <div className="modal-overlay" onClick={() => setShowInfoModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h3>What's Analyzed?</h3>
-            <p>The AI evaluates your profile against the target role by analyzing:</p>
+            <p>The AI evaluates my profile against the target role by analyzing:</p>
             <ul>
               <li><strong>Skills:</strong> Technical and soft skills match</li>
               <li><strong>Experience:</strong> Relevant work history and projects</li>

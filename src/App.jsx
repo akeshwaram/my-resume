@@ -43,7 +43,7 @@ export default function App({ resumeData }) {
           { href: "#skills", label: "Skills" },
           { href: "#certs", label: "Certifications" },
           { href: "#experience", label: "Experience" },
-          // { href: "#projects", label: "Projects" },
+          { href: "#projects", label: "Projects" },
           { href: "#education", label: "Education" },
           { href: "#contact", label: "Contact" },
         ]}
@@ -87,10 +87,10 @@ export default function App({ resumeData }) {
           }))}
         />
 
-        {/* <Section
+        <Section
           id="projects"
-          title="Projects"
-          variant="cards"
+          title="Independent Technical Projects"
+          variant="compact"
           list={(resumeData?.projects?.list || []).map((p) => {
             if (typeof p === "string") return { title: p };
             return {
@@ -100,7 +100,7 @@ export default function App({ resumeData }) {
               link: p.url,
             };
           })}
-        /> */}
+        />
 
         <Section
           id="education"
