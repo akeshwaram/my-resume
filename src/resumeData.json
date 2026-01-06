@@ -2,30 +2,23 @@
   "about": {
     "name": "Ashwin Keshwaram",
     "location": "Hyderabad, India",
-    "content": "Proven Software Engineer with 15+ years of hands-on experience in the US tech industry. Experienced Sitecore (a popular .NET-based CMS) and .NET Developer with 10 years of expertise in developing and implementing Sitecore based solutions and over 15 years in .NET applications. Full-stack versatility with an expertise in backend development (Sitecore, Node.js, .NET, .NET Core, SQL Server) and a solid foundation in frontend technologies (React, JavaScript). Skilled in collaborating with product owners, leadership, and business stakeholders, while mentoring and supporting both in-house and client team developers to enhance their skills."
+    "content": "Senior Software Engineer with 16+ years of experience designing, scaling, and operating enterprise web platforms across fintech and content-driven ecosystems. Proven track record of owning end-to-end technical solutions, driving architectural and performance improvements, and influencing engineering practices across globally distributed teams. Deep expertise in .NET platforms and modern frontend frameworks, with experience designing scalable systems, CI/CD, and observability. Applied cloud-native patterns through serverless architectures and infrastructure as code."
   },
   "experience": {
     "list": [
       {
         "role": "Senior Software Engineer",
-        "company": "Fincentric (prev. part of S&P Global)",
+        "company": "Fincentric (formerly part of S&P Global; now Communify Fincentric)",
         "period": "Sep 2020 – Dec 2024",
         "location": "Denver, CO, USA",
         "highlights": [
-          "Led development for a website with 27 regions, 31 languages, and over $2 trillion in assets under management for a global investment management firm client of S&P Global by utilizing Sitecore 9.3, C#, .NET Framework, SQL Server, JavaScript, HTML, and CSS daily",
-          "Created a dashboard to monitor client’s fund data utilizing C#, .NET Core, and .NET Core MVC logic",
-          "Implemented custom pipelines to meet unique needs of the project, accommodate custom business logic, and create experiences tailored to different user roles",
-          "Developed and maintained PowerShell scripts to automate and streamline Sitecore tasks across multiple language versions, enabling reuse across teams",
-          "Created and adjusted SQL Server stored procedures for handling complex data processing tasks",
-          "Improved Sitecore practices and mentor other developers on the team on best practices",
-          "Led performance improvements by refining caching strategies, optimizing sublayouts/renderings, configuring Solr search indexes, and minimizing redundant SQL stored procedure calls, achieving a 30% increase in response times for high-demand pages",
-          "Utilized Grafana and Kibana for real-time monitoring and to identify performance bottlenecks",
-          "Developed a public-facing web application for a high-profile fintech client of S&P Global, using React for the frontend, supported by a Node API and SQL Server for the backend",
-          "Utilized JUnit for unit testing in Node.js and React applications to ensure 95%+ coverage for each individual feature",
-          "Served as the primary point of contact for all Sitecore and .NET related inquiries and issues within the team",
-          "Utilized Nomad and Docker to containerize applications",
-          "Implemented and maintained Jenkins pipelines for automated build, testing, and deployment, integrating SonarQube for continuous code quality analysis, improving code reliability",
-          "Conducted thorough code reviews for pull requests, ensuring adherence to coding standards and best practices"
+          "Owned technical design and delivery of a large-scale, multi-region, multi-language Sitecore platform supporting 27 regions, 31 languages, and $2T+ in assets under management for a global investment management client",
+          "Acted as primary technical liaison across globally distributed engineering and business teams, translating complex business requirements into architectural decisions and execution plans",
+          "Drove platform-wide performance optimizations by redesigning caching strategies, tuning Solr search indexes, optimizing Sitecore renderings, and eliminating redundant SQL calls, resulting in ~30% improvement in response times on high-traffic pages",
+          "Designed and implemented custom Sitecore pipelines to support complex business workflows, role-based experiences, and extensibility requirements",
+          "Established observability and monitoring practices using Grafana and Kibana to proactively identify performance bottlenecks and production issues",
+          "Led development of a public-facing fintech web application using React and Node.js, backed by SQL Server, supporting high-visibility client use cases",
+          "Mentored and guided engineers on Sitecore, .NET, and platform best practices, improving delivery consistency and long-term maintainability"
         ]
       },
       {
@@ -34,20 +27,20 @@
         "period": "Apr 2020 – Sep 2020",
         "location": "Denver, CO, USA",
         "highlights": [
-          "Wrote code that adheres to Sitecore JSS/Headless architecture using the .NET Framework, C#, Angular, and Typescript for arrow.com",
-          "Supported and improved arrow.com including building new Sitecore components to ease the creation of new high traffic and high revenue pages by content editors and marketers"
+          "Contributed to the design and implementation of headless Sitecore JSS architecture for arrow.com using .NET, Angular, and TypeScript",
+          "Built reusable Sitecore components enabling content editors and marketers to rapidly create high-traffic, revenue-critical pages",
+          "Improved platform stability and developer velocity through consistent coding standards and collaboration with cross-functional teams"
         ]
       },
       {
-        "role": "Software Engineer",
+        "role": "Sitecore Developer",
         "company": "Vertic (now part of Globant)",
         "period": "Mar 2018 – Mar 2020",
         "location": "New York, NY, USA",
         "highlights": [
-          "Built and maintained websites for multiples high-profiles clients of Vertic. Created over 100 different web components using Sitecore, C#, .NET MVC, .NET WebForms, and Web API",
-          "Managed and optimized the content authoring process within Sitecore Experience Editor for a large number of components",
-          "Worked collaboratively with other developers, participate in peer code reviews, and followed best practices and design patterns",
-          "Supported cloud-based deployment and management of Sitecore/.NET application environments in Azure"
+          "Designed and delivered 100+ reusable Sitecore components across multiple high-profile enterprise client websites",
+          "Owned Sitecore Experience Editor optimizations, significantly improving the content authoring workflow for non-technical users",
+          "Participated in architectural discussions, peer code reviews, and cloud deployment strategies for Sitecore-based platforms hosted in Azure"
         ]
       },
       {
@@ -56,10 +49,9 @@
         "period": "Nov 2014 – Jan 2018",
         "location": "Somerville, MA, USA & Raleigh, NC, USA",
         "highlights": [
-          "Built Sitecore applications from scratch using .NET MVC, .NET WebForms, Angular, and Backbone",
-          "Upgraded applications to latest versions of Sitecore using express migration tool",
-          "Implemented custom workflows for content authors to ensure smooth transition between drafting, review, and publishing",
-          "Implemented unit tests using NUnit to ensure code quality and functionality, leading to improved test coverage and reduced bug rates in production"
+          "Built and scaled Sitecore applications from scratch using .NET MVC, WebForms, Angular, and Backbone, supporting enterprise content platforms",
+          "Led Sitecore version upgrades using migration tools, ensuring minimal downtime and backward compatibility",
+          "Designed custom authoring workflows and implemented automated unit testing, reducing production defects and improving release confidence"
         ]
       },
       {
@@ -68,8 +60,9 @@
         "period": "Sep 2008 – Nov 2014",
         "location": "San Antonio, TX, USA",
         "highlights": [
-          "Participated in all phases of the software development of Data Interaction, an online platform for reporting student assessment and performance results at the State, District and School Levels",
-          "Designed, implemented, and tested the Analyze module for the application, enabling users to generate customized reports using district/state assessment data, and developed the back end for multiple reports in C# with .NET Web Forms, .NET MVC, and jQuery to allow users to tailor the data displayed"
+          "Contributed to the full software development lifecycle of Data Interaction, a large-scale education analytics platform used at state, district, and school levels",
+          "Designed and implemented the Analyze module, enabling complex, customizable reporting over large assessment datasets",
+          "Developed backend services and reporting features using C#, .NET Web Forms, .NET MVC, and jQuery"
         ]
       }
     ]
@@ -77,55 +70,53 @@
   "projects": {
     "list": [
       {
-        "title": "Cloud Cost Optimizer",
-        "description": "Analyzer for idle resources and rightsizing suggestions.",
-        "stack": ["React", "Node.js", "AWS Lambda", "Athena"],
-        "url": "https://example.com/cost-optimizer"
-      },
-      "Serverless Image Pipeline"
+        "title": "Serverless Portfolio Website",
+        "description": "Independently designed and implemented a complete serverless architecture using AWS",
+        "stack": ["AWS", "S3", "AWS Lambda", "DynamoDB", "API Gateway", "CloudFront", "AWS SAM", "GitHub Actions", "Amazon Bedrock (Llama 3)", "Kiro" ],
+        "url": "https://www.ashwinkeshwaram.com"
+      }
     ]
   },
   "skills": {
     "list": [
-      "Cloud: AWS (EC2, S3, RDS, Lambda, API Gateway, CloudFront, Route 53, IAM, CloudFormation)",
-      "Serverless Architecture, CI/CD (CodePipeline, Jenkins)",
-      "AWS: Monitoring & Security (CloudWatch, CloudTrail, IAM)",
       "C#",
       ".NET Core",
       ".NET MVC",
       "ASP.NET Web API",
-      "ASP.NET Web Forms",
       "Node.js",
+      "ASP.NET Web Forms",
       "Web Services (REST and SOAP)",
-      "React",
-      "HTML5",
-      "CSS3",
-      "Angular",
-      "JavaScript",
-      "Bootstrap",
-      "Tailwind",
-      "Visual Studio",
-      "Git",
-      "Swagger",
-      "Consul",
-      "Apigee",
-      "Kibana",
-      "Grafana",
-      "Jenkins",
-      "TFS",
-      "SVN",
+      "SQL Server",
+      "Entity Framework",
+      "Cloud: AWS (EC2, S3, RDS, Lambda, API Gateway, CloudFront, Route 53, IAM, AWS SAM)",
+      "Serverless Architecture, CI/CD (CodePipeline, Jenkins, GitHub Actions)",
+      "AWS: Monitoring & Security (CloudWatch, CloudTrail, IAM)",
       "Docker",
       "Nomad",
-      "SQL Server",
-      "Solr/Lucene",
-      "Entity Framework",
-      "LINQ",
-      "Agile (Scrum)",
-      "jest-junit",
-      "Autofac",
-      "NSubstitute",
-      "NUnit",
-      "NCrunch"
+      "React",
+      "JavaScript",
+      "Angular",
+      "HTML5",
+      "CSS3",      
+      "Bootstrap",
+      "Tailwind",
+      "Grafana",
+      "Kibana",
+      "SonaqQube",
+      "Swagger",
+      "Apigee",
+      "Consul",
+      "Git",
+      "TFS",
+      "SVN",
+      "System Design",
+      "Performance optimization",
+      "Code reviews",
+      "Mentoring",
+      "Agile/Scrum",
+      "Automated testing (NUnit, NSubstitute, jest-junit)",
+      "Visual Studio",
+      "Amazon Kiro"
     ]
   },
   "education": {
@@ -163,13 +154,8 @@
       },
       {
         "label": "LinkedIn",
-        "value": "https://www.linkedin.com/in/ashwinkeshwaram/",
-        "href": "https://www.linkedin.com/in/ashwinkeshwaram/"
-      },
-      {
-        "label": "Resume",
-        "value": "Download",
-        "href": "./Resume.pdf"
+        "value": "https://www.linkedin.com/in/akeshwaram/",
+        "href": "https://www.linkedin.com/in/akeshwaram/"
       }
     ]
   }
