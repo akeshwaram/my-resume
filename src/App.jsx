@@ -59,7 +59,7 @@ export default function App({ resumeData }) {
         <ResumeMatcherSection resumeData={resumeData} />
         <Section
           id="skills"
-          title="Skills"
+          title="Technical Leadership & Expertise"
           variant="tags"
           list={resumeData?.skills?.list || []}
         />

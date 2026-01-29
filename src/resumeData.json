@@ -2,7 +2,7 @@
   "about": {
     "name": "Ashwin Keshwaram",
     "location": "Hyderabad, India",
-    "content": "Senior Software Engineer with 16+ years of experience designing, scaling, and operating enterprise web platforms across fintech and content-driven ecosystems. Proven track record of owning end-to-end technical solutions, driving architectural and performance improvements, and influencing engineering practices across globally distributed teams. Deep expertise in .NET platforms and modern frontend frameworks, with experience designing scalable systems, CI/CD, and observability. Applied cloud-native patterns through serverless architectures and infrastructure as code."
+    "content": "Senior engineer with 16+ years of experience designing, scaling, and operating enterprise web platforms across fintech and content-driven ecosystems. Proven track record of owning end-to-end technical solutions, driving architectural and performance improvements, and influencing engineering practices across globally distributed teams. Extensive experience designing and scaling .NET-based backend systems, complemented by strong experience across modern frontend frameworks and JavaScript ecosystems. Applied cloud-native patterns through serverless architectures and infrastructure as code."
   },
   "experience": {
     "list": [
@@ -12,13 +12,14 @@
         "period": "Sep 2020 – Dec 2024",
         "location": "Denver, CO, USA",
         "highlights": [
-          "Owned technical design and delivery of a large-scale, multi-region, multi-language Sitecore platform supporting 27 regions, 31 languages, and $2T+ in assets under management for a global investment management client",
-          "Acted as primary technical liaison across globally distributed engineering and business teams, translating complex business requirements into architectural decisions and execution plans",
-          "Drove platform-wide performance optimizations by redesigning caching strategies, tuning Solr search indexes, optimizing Sitecore renderings, and eliminating redundant SQL calls, resulting in ~30% improvement in response times on high-traffic pages",
-          "Designed and implemented custom Sitecore pipelines to support complex business workflows, role-based experiences, and extensibility requirements",
-          "Established observability and monitoring practices using Grafana and Kibana to proactively identify performance bottlenecks and production issues",
-          "Led development of a public-facing fintech web application using React and Node.js, backed by SQL Server, supporting high-visibility client use cases",
-          "Mentored and guided engineers on Sitecore, .NET, and platform best practices, improving delivery consistency and long-term maintainability"
+          "Owned technical design and backend architecture for a large-scale, multi-region, multi-language platform supporting 27 regions, 31 languages, and $2T+ AUM",
+          "Acted as primary technical liaison across globally distributed engineering and business teams, translating complex requirements into architectural decisions and execution plans",
+          "Improved platform stability and developer velocity by standardizing engineering practices and driving cross-team design alignment across the platform",
+          "Drove platform-wide performance optimizations by redesigning caching strategies, tuning Solr indexes, optimizing renderings, and eliminating redundant SQL calls, resulting in ~30% improvement on high-traffic pages",
+          "Designed and implemented custom Sitecore pipelines to support complex workflows, role-based experiences, and extensibility requirements",
+          "Established observability and monitoring practices (Grafana, Kibana) to proactively identify performance bottlenecks and production issues",
+          "Led development of a public-facing fintech web application using React + Node.js backed by SQL Server, supporting high-visibility client use cases",
+          "Delivered high-visibility features overseen by company leadership, driving predictable execution under tight timelines and external scrutiny"
         ]
       },
       {
@@ -60,9 +61,7 @@
         "period": "Sep 2008 – Nov 2014",
         "location": "San Antonio, TX, USA",
         "highlights": [
-          "Contributed to the full software development lifecycle of Data Interaction, a large-scale education analytics platform used at state, district, and school levels",
-          "Designed and implemented the Analyze module, enabling complex, customizable reporting over large assessment datasets",
-          "Developed backend services and reporting features using C#, .NET Web Forms, .NET MVC, and jQuery"
+          "Designed and delivered reporting and analytics features for a large-scale education assessment platform used by state, district, and school stakeholders"
         ]
       }
     ]
@@ -71,7 +70,7 @@
     "list": [
       {
         "title": "Serverless Portfolio Website",
-        "description": "Independently designed and implemented a complete serverless architecture using AWS",
+        "description": "Independently designed and implemented a complete serverless architecture using AWS; accelerated development with AI-assisted tooling (Amazon Kiro)",
         "stack": ["AWS", "S3", "AWS Lambda", "DynamoDB", "API Gateway", "CloudFront", "AWS SAM", "GitHub Actions", "Amazon Bedrock (Llama 3)", "Kiro" ],
         "url": "https://www.ashwinkeshwaram.com"
       }
