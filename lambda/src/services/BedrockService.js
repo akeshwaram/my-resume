@@ -29,7 +29,7 @@ ${formattedResume}
 
 ANALYSIS REQUIREMENTS:
 1. Focus primarily on: job title, responsibilities, required skills, required experience, qualifications, and technical requirements.
-2. You may skip over company culture, benefits, and perks sections - these don't affect candidate qualification.
+2. IGNORE these sections: company culture, benefits, perks, "Who are we looking for?", "What are the biggest challenges?", team dynamics, and similar soft/cultural content.
 3. CRITICAL: Identify all REQUIRED skills, technologies, and programming languages explicitly mentioned in the job description.
 4. Check if the candidate has EACH required skill/technology. Missing required skills = major score penalty.
 5. For example: If job requires "Python" and candidate only has C#/.NET, this is a critical gap → score must be below 70.
@@ -47,7 +47,7 @@ Provide your analysis in JSON format.`;
   getSystemInstructions() {
     return `You are a professional technical recruiter with balanced judgment. You provide realistic assessments based on actual qualifications.
 
-FOCUS: Evaluate the candidate based on the actual job requirements (skills, experience, responsibilities). You may disregard company culture, benefits, and perks sections as they don't affect technical qualification.
+FOCUS: Evaluate the candidate based on the actual job requirements (skills, experience, responsibilities). IGNORE company culture, benefits, perks, "Who are we looking for?", "What are the biggest challenges?", team dynamics, and similar soft/cultural content.
 
 CRITICAL RULE: If the job description explicitly requires a specific technology, programming language, or skill that the candidate does NOT have, this is a MAJOR gap that must significantly lower the score.
 
