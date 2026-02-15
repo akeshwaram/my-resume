@@ -2,26 +2,29 @@ import BedrockService from './services/BedrockService.js';
 import ResumeFormatter from './utils/ResumeFormatter.js';
 
 /**
- * Validates the job title input
- * @param {string} jobTitle - The job title to validate
+ * Validates the job description input
+ * @param {string} jobDescription - The job description to validate
  * @throws {Error} If validation fails
  */
-function validateJobTitle(jobTitle) {
-  if (!jobTitle || typeof jobTitle !== 'string') {
-    throw new Error('Job title is required and must be a string');
+function validateJobDescription(jobDescription) {
+  if (!jobDescription || typeof jobDescription !== 'string') {
+    throw new Error('Job description is required and must be a string');
   }
 
-  const trimmedTitle = jobTitle.trim();
+  const trimmedDescription = jobDescription.trim();
   
-  if (trimmedTitle.length < 2) {
-    throw new Error('Job title must be at least 2 characters long');
+  // Count words
+  const wordCount = trimmedDescription.split(/\s+/).filter(word => word.length > 0).length;
+  
+  if (wordCount < 100) {
+    throw new Error('Job description must be at least 100 words long');
   }
 
-  if (trimmedTitle.length > 50) {
-    throw new Error('Job title must not exceed 50 characters');
+  if (wordCount > 2000) {
+    throw new Error('Job description must not exceed 2000 words');
   }
 
-  return trimmedTitle;
+  return trimmedDescription;
 }
 
 /**
@@ -84,11 +87,11 @@ export async function handler(event) {
       });
     }
 
-    const { jobTitle, resumeData } = requestBody;
+    const { jobDescription, resumeData } = requestBody;
 
     // Validate inputs
     try {
-      const validatedJobTitle = validateJobTitle(jobTitle);
+      const validatedJobDescription = validateJobDescription(jobDescription);
       validateResumeData(resumeData);
 
       // Format resume data to readable text
@@ -97,7 +100,7 @@ export async function handler(event) {
       // Initialize Bedrock service and analyze job match
       const bedrockService = new BedrockService();
       const analysisResult = await bedrockService.analyzeJobMatch(
-        validatedJobTitle,
+        validatedJobDescription,
         formattedResume
       );
 

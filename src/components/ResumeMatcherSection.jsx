@@ -4,21 +4,22 @@ import AnalysisResults from "./AnalysisResults.jsx";
 import "./ResumeMatcherSection.css";
 
 export default function ResumeMatcherSection({ resumeData }) {
-  const [jobTitle, setJobTitle] = useState("");
+  const [jobDescription, setJobDescription] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [cachedResults, setCachedResults] = useState({});
 
-  const MIN_CHARS = 2;
-  const MAX_CHARS = 50;
-  
-  const presetRoles = [
-    "Technical Architect",
-    "Solutions Architect", 
-    "Engineering Manager"
-  ];
+  const MIN_WORDS = 100;
+  const MAX_WORDS = 2000;
+
+  // Count words in text
+  const countWords = (text) => {
+    return text.trim().split(/\s+/).filter(word => word.length > 0).length;
+  };
+
+  const wordCount = countWords(jobDescription);
 
   // Load cached results from localStorage on mount
   useEffect(() => {
@@ -34,18 +35,18 @@ export default function ResumeMatcherSection({ resumeData }) {
 
   // Validation helper
   const getValidationError = () => {
-    if (jobTitle.length === 0) return null;
-    if (jobTitle.length < MIN_CHARS) {
-      return `Job title must be at least ${MIN_CHARS} characters (currently ${jobTitle.length})`;
+    if (jobDescription.length === 0) return null;
+    if (wordCount < MIN_WORDS) {
+      return `Job description must be at least ${MIN_WORDS} words (currently ${wordCount})`;
     }
-    if (jobTitle.length > MAX_CHARS) {
-      return `Job title must not exceed ${MAX_CHARS} characters (currently ${jobTitle.length})`;
+    if (wordCount > MAX_WORDS) {
+      return `Job description must not exceed ${MAX_WORDS} words (currently ${wordCount})`;
     }
     return null;
   };
 
   const validationError = getValidationError();
-  const isValid = jobTitle.length >= MIN_CHARS && jobTitle.length <= MAX_CHARS;
+  const isValid = wordCount >= MIN_WORDS && wordCount <= MAX_WORDS;
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -54,7 +55,7 @@ export default function ResumeMatcherSection({ resumeData }) {
     if (!isValid) return;
 
     // Check cache first
-    const cacheKey = jobTitle.toLowerCase().trim();
+    const cacheKey = jobDescription.toLowerCase().trim();
     if (cachedResults[cacheKey]) {
       setResult(cachedResults[cacheKey]);
       return;
@@ -77,7 +78,7 @@ export default function ResumeMatcherSection({ resumeData }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          jobTitle,
+          jobDescription,
           resumeData,
         }),
       });
@@ -102,13 +103,13 @@ export default function ResumeMatcherSection({ resumeData }) {
   };
 
   // Handle preset chip click
-  const handlePresetClick = (role) => {
-    setJobTitle(role);
+  const handlePresetClick = (description) => {
+    setJobDescription(description);
   };
 
   // Handle new analysis
   const handleNewAnalysis = () => {
-    setJobTitle("");
+    setJobDescription("");
     setResult(null);
     setError(null);
   };
@@ -126,7 +127,7 @@ export default function ResumeMatcherSection({ resumeData }) {
         <h2 className="gradient-title">Role Compatibility Check</h2>
       </div>
       <p className="section-description">
-        Curious how well my experience aligns with a specific role? Enter a job title below and let AI evaluate the match.
+        Paste a job description below and let AI evaluate how well my experience aligns with the role.
         <button 
           className="info-link"
           onClick={() => setShowInfoModal(true)}
@@ -138,47 +139,34 @@ export default function ResumeMatcherSection({ resumeData }) {
 
       {!result && !isAnalyzing && (
         <form onSubmit={handleSubmit} className="job-matcher-form">
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="job-title" className="form-label">
-                Target Role
-              </label>
-              <input
-                type="text"
-                id="job-title"
-                className={`job-title-input ${validationError && jobTitle.length > 0 ? "input-error" : ""}`}
-                value={jobTitle}
-                onChange={(e) => setJobTitle(e.target.value)}
-                placeholder="e.g., Solutions Architect"
-                maxLength={50}
-                disabled={isAnalyzing}
-              />
-              {validationError && jobTitle.length > 0 && (
-                <div className="validation-error">{validationError}</div>
-              )}
+          <div className="form-group">
+            <label htmlFor="job-description" className="form-label">
+              Job Description
+            </label>
+            <textarea
+              id="job-description"
+              className={`job-description-input ${validationError && jobDescription.length > 0 ? "input-error" : ""}`}
+              value={jobDescription}
+              onChange={(e) => setJobDescription(e.target.value)}
+              placeholder="Paste the full job description here, including responsibilities, requirements, and qualifications..."
+              rows={8}
+              disabled={isAnalyzing}
+            />
+            <div className="char-counter">
+              {wordCount} / {MAX_WORDS} words
             </div>
-
-            <button
-              type="submit"
-              className="submit-button"
-              disabled={!isValid || isAnalyzing}
-            >
-              Check Fit
-            </button>
+            {validationError && jobDescription.length > 0 && (
+              <div className="validation-error">{validationError}</div>
+            )}
           </div>
 
-          <div className="preset-chips">
-            {presetRoles.map((role) => (
-              <button
-                key={role}
-                type="button"
-                className="preset-chip"
-                onClick={() => handlePresetClick(role)}
-              >
-                {role}
-              </button>
-            ))}
-          </div>
+          <button
+            type="submit"
+            className="submit-button"
+            disabled={!isValid || isAnalyzing}
+          >
+            Check Fit
+          </button>
         </form>
       )}
       
