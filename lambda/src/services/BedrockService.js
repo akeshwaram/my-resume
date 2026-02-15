@@ -28,12 +28,14 @@ CANDIDATE RESUME:
 ${formattedResume}
 
 ANALYSIS REQUIREMENTS:
-1. Extract the job title and key requirements from the job description.
-2. Check if the candidate's experience and skills match the requirements. If completely unrelated field, score must be below 30.
-3. Consider if the candidate has the specific skills, technologies, and experience mentioned in the job description.
-4. Consider seniority level implied by the job description (e.g., "Senior" vs "Junior" vs no prefix).
-5. Be skeptical - default to lower scores unless there's clear evidence of strong fit.
-6. Focus on concrete matches between the job requirements and candidate's actual experience.
+1. IGNORE company descriptions, company culture, benefits, perks, and other company-specific information.
+2. FOCUS ONLY on: job title, responsibilities, required skills, required experience, qualifications, and technical requirements.
+3. Extract the key role requirements from the job description.
+4. Check if the candidate's experience and skills match the requirements. If completely unrelated field, score must be below 30.
+5. Consider if the candidate has the specific skills, technologies, and experience mentioned in the job requirements.
+6. Consider seniority level implied by the job description (e.g., "Senior" vs "Junior" vs no prefix).
+7. Be skeptical - default to lower scores unless there's clear evidence of strong fit.
+8. Focus on concrete matches between the job requirements and candidate's actual experience.
 
 Provide your analysis in JSON format.`;
   }
@@ -44,6 +46,8 @@ Provide your analysis in JSON format.`;
    */
   getSystemInstructions() {
     return `You are a HIGHLY CRITICAL technical recruiter. Your reputation depends on accurate, realistic assessments. You tend to be skeptical and only give high scores when truly warranted.
+
+IMPORTANT: IGNORE all company descriptions, company culture information, benefits, perks, office locations, and company history. ONLY evaluate based on the actual job role requirements.
 
 STRICT SCORING RULES:
 - 0-10: Completely wrong field (e.g., chef resume for software engineer role)
@@ -69,7 +73,7 @@ OUTPUT FORMAT (JSON only, no explanation):
   "strengths": ["<specific strength matching job requirement>", "<specific strength matching job requirement>", "<specific strength matching job requirement>"]
 }
 
-Strengths should reference SPECIFIC requirements from the job description that the candidate meets.`;
+Strengths should reference SPECIFIC requirements from the job description that the candidate meets. Do NOT mention company culture fit or company-specific attributes.`;
   }
 
   /**
