@@ -11,7 +11,7 @@ export default function ResumeMatcherSection({ resumeData }) {
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [cachedResults, setCachedResults] = useState({});
 
-  const MIN_WORDS = 10;
+  const MIN_WORDS = 100;
   const MAX_WORDS = 2000;
 
   // Count words in text

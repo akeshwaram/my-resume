@@ -16,8 +16,8 @@ function validateJobDescription(jobDescription) {
   // Count words
   const wordCount = trimmedDescription.split(/\s+/).filter(word => word.length > 0).length;
   
-  if (wordCount < 10) {
-    throw new Error('Job description must be at least 10 words long');
+  if (wordCount < 100) {
+    throw new Error('Job description must be at least 100 words long');
   }
 
   if (wordCount > 2000) {
