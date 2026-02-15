@@ -138,26 +138,52 @@
   background-color: #f8fafc;
 }
 
-.job-title-input:focus {
+.job-description-input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.6;
+  transition: all 0.2s ease;
+  background-color: #f8fafc;
+  resize: vertical;
+  min-height: 200px;
+}
+
+.job-title-input:focus,
+.job-description-input:focus {
   outline: none;
   border-color: #3b82f6;
   background-color: #ffffff;
   box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08);
 }
 
-.job-title-input.input-error {
+.job-title-input.input-error,
+.job-description-input.input-error {
   border-color: #ef4444;
 }
 
-.job-title-input.input-error:focus {
+.job-title-input.input-error:focus,
+.job-description-input.input-error:focus {
   border-color: #ef4444;
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
 }
 
-.job-title-input:disabled {
+.job-title-input:disabled,
+.job-description-input:disabled {
   background-color: #f3f4f6;
   cursor: not-allowed;
   opacity: 0.6;
+}
+
+.char-counter {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+  margin-top: 0.5rem;
+  text-align: right;
 }
 
 .input-footer {

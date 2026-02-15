@@ -14,25 +14,26 @@ class BedrockService {
 
   /**
    * Build structured prompt for resume analysis
-   * @param {string} jobTitle - The job title to analyze against
+   * @param {string} jobDescription - The job description to analyze against
    * @param {string} formattedResume - The formatted resume text
    * @returns {string} Structured prompt for AI analysis
    */
-  buildPrompt(jobTitle, formattedResume) {
-    return `Analyze if this candidate is qualified for the job title. Be HIGHLY CRITICAL and realistic.
+  buildPrompt(jobDescription, formattedResume) {
+    return `Analyze if this candidate is qualified for the job described below. Be HIGHLY CRITICAL and realistic.
 
-JOB TITLE:
-${jobTitle}
+JOB DESCRIPTION:
+${jobDescription}
 
 CANDIDATE RESUME:
 ${formattedResume}
 
 ANALYSIS REQUIREMENTS:
-1. First check if the job title is valid. If it's gibberish or random text, score must be 0-10.
-2. Check if the candidate's experience and skills match this job title. If completely unrelated field, score must be below 30.
-3. Consider if the candidate has the typical skills and experience expected for this role.
-4. Consider seniority level implied by the title (e.g., "Senior" vs "Junior" vs no prefix).
+1. Extract the job title and key requirements from the job description.
+2. Check if the candidate's experience and skills match the requirements. If completely unrelated field, score must be below 30.
+3. Consider if the candidate has the specific skills, technologies, and experience mentioned in the job description.
+4. Consider seniority level implied by the job description (e.g., "Senior" vs "Junior" vs no prefix).
 5. Be skeptical - default to lower scores unless there's clear evidence of strong fit.
+6. Focus on concrete matches between the job requirements and candidate's actual experience.
 
 Provide your analysis in JSON format.`;
   }
@@ -45,30 +46,30 @@ Provide your analysis in JSON format.`;
     return `You are a HIGHLY CRITICAL technical recruiter. Your reputation depends on accurate, realistic assessments. You tend to be skeptical and only give high scores when truly warranted.
 
 STRICT SCORING RULES:
-- 0-10: Invalid/gibberish job title OR completely wrong field (e.g., chef resume for software engineer title)
-- 11-30: Wrong industry/field or missing ALL typical skills for this role
-- 31-50: Some relevant experience but missing most skills expected for this title
-- 51-65: Decent match with several gaps in typical requirements for this role
-- 66-75: Good match, has most skills and experience expected for this title
-- 76-85: Strong match, clearly qualified with solid relevant experience
-- 86-100: RARE - Exceptional match, significantly exceeds typical qualifications for this title
+- 0-10: Completely wrong field (e.g., chef resume for software engineer role)
+- 11-30: Wrong industry/field or missing ALL key requirements from job description
+- 31-50: Some relevant experience but missing most requirements listed in job description
+- 51-65: Decent match with several gaps in requirements
+- 66-75: Good match, has most skills and experience from job description
+- 76-85: Strong match, clearly qualified with solid relevant experience matching requirements
+- 86-100: RARE - Exceptional match, significantly exceeds requirements in job description
 
 DEFAULT BEHAVIOR: Start at 50 and adjust down for each mismatch. Only adjust up if there's exceptional fit.
 
 MANDATORY CHECKS (each failure reduces score by 15-20 points):
-1. Is job title valid and clear? (If no → score 0-10)
-2. Does candidate's field/industry match this job title? (If no → score below 30)
-3. Does candidate have typical experience level for this title? (If no → reduce by 20)
-4. Does candidate have typical skills expected for this role? (If no → reduce by 15 per major gap)
-5. Does seniority match title (Senior/Lead/Junior)? (If no → reduce by 15)
+1. Does candidate's field/industry match this job? (If no → score below 30)
+2. Does candidate have the specific technologies/tools mentioned? (If no → reduce by 15 per major gap)
+3. Does candidate have experience level matching requirements? (If no → reduce by 20)
+4. Does candidate have the key responsibilities mentioned in job description? (If no → reduce by 15 per major gap)
+5. Does seniority match requirements (Senior/Lead/Junior)? (If no → reduce by 15)
 
 OUTPUT FORMAT (JSON only, no explanation):
 {
   "score": <number 0-100>,
-  "strengths": ["<specific strength>", "<specific strength>", "<specific strength>"]
+  "strengths": ["<specific strength matching job requirement>", "<specific strength matching job requirement>", "<specific strength matching job requirement>"]
 }
 
-If there are no real strengths, list why the score is low instead.`;
+Strengths should reference SPECIFIC requirements from the job description that the candidate meets.`;
   }
 
   /**
@@ -108,17 +109,17 @@ If there are no real strengths, list why the score is low instead.`;
 
   /**
    * Analyze job match using Bedrock Runtime
-   * @param {string} jobTitle - The job title to analyze
+   * @param {string} jobDescription - The job description to analyze
    * @param {string} formattedResume - The formatted resume text
    * @returns {Promise<Object>} Analysis result with score and strengths
    */
-  async analyzeJobMatch(jobTitle, formattedResume) {
+  async analyzeJobMatch(jobDescription, formattedResume) {
     try {
       // Log which model is being used
       console.log(`Using Bedrock model: ${this.modelId}`);
       
       // Build the analysis prompt
-      const prompt = this.buildPrompt(jobTitle, formattedResume);
+      const prompt = this.buildPrompt(jobDescription, formattedResume);
       const systemInstructions = this.getSystemInstructions();
 
       // Create the Converse command
@@ -140,7 +141,7 @@ If there are no real strengths, list why the score is low instead.`;
           }
         ],
         inferenceConfig: {
-          maxTokens: 500,
+          maxTokens: 1000,
           temperature: 0.3,
           topP: 0.9
         }
@@ -174,7 +175,7 @@ If there are no real strengths, list why the score is low instead.`;
       // Parse the response
       const analysisResult = this.parseResponse(responseText);
       
-      console.log(`Analysis completed successfully for job title: "${jobTitle}" with score: ${analysisResult.score}`);
+      console.log(`Analysis completed successfully with score: ${analysisResult.score}`);
 
       return analysisResult;
     } catch (error) {
